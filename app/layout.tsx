@@ -31,9 +31,40 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Bhagyashree Phadnis — Product Designer",
+  title: {
+    default: "Bhagyashree Phadnis — Product Designer",
+    template: "%s",
+  },
   description:
     "Portfolio of Bhagyashree Phadnis, an engineer turned product designer specializing in visually appealing, data-driven experiences.",
+  metadataBase: new URL("https://bhagyashreephadnis.com"),
+  openGraph: {
+    title: "Bhagyashree Phadnis — Product Designer",
+    description:
+      "An engineer turned product designer specializing in visually appealing, data-driven experiences that enhance the lives of users.",
+    url: "https://bhagyashreephadnis.com",
+    siteName: "Bhagyashree Phadnis",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 1419,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bhagyashree Phadnis — Product Designer",
+    description:
+      "An engineer turned product designer specializing in visually appealing, data-driven experiences that enhance the lives of users.",
+    images: ["/images/og-image.png"],
+  },
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
