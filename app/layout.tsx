@@ -37,12 +37,12 @@ export const metadata: Metadata = {
   },
   description:
     "Portfolio of Bhagyashree Phadnis, an engineer turned product designer specializing in visually appealing, data-driven experiences.",
-  metadataBase: new URL("https://bhagyashreephadnis.com"),
+  metadataBase: new URL("https://www.bhagyashreephadnis.com"),
   openGraph: {
     title: "Bhagyashree Phadnis — Product Designer",
     description:
       "An engineer turned product designer specializing in visually appealing, data-driven experiences that enhance the lives of users.",
-    url: "https://bhagyashreephadnis.com",
+    url: "https://www.bhagyashreephadnis.com",
     siteName: "Bhagyashree Phadnis",
     images: [
       {
