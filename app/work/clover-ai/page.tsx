@@ -364,7 +364,7 @@ export default function HealthLiteracyPage() {
                   {/* Image breaking out at bottom */}
                   <div style={{ marginBottom: -100 }}>
                     <Image
-                      src="/images/finance-management.png"
+                      src="/images/finance-management.webp"
                       alt="WalletWize project mockup"
                       width={600}
                       height={450}

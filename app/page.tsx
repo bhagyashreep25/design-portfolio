@@ -18,7 +18,7 @@ const workItems = [
     tags: ["AI", "SaaS"],
     bgColor: "#E6FAFA",
     accentColor: "#00228a",
-    image: "/images/ai-growth-engine.png",
+    image: "/images/ai-growth-engine.webp",
     comingSoon: true,
   },
   {
@@ -37,7 +37,7 @@ const workItems = [
     tags: ["B2B", "EdTech"],
     bgColor: "#f4ebff",
     accentColor: "#00228a",
-    image: "/images/school-counselling.png",
+    image: "/images/school-counselling.webp",
     comingSoon: true,
   },
   {
@@ -55,7 +55,7 @@ const workItems = [
     tags: ["FinTech", "B2C"],
     bgColor: "#FFEDFB",
     accentColor: "#C9259A",
-    image: "/images/finance-management.png",
+    image: "/images/finance-management.webp",
   },
   {
     slug: "clover-ai",
@@ -73,7 +73,7 @@ const workItems = [
     tags: ["HealthTech", "AI"],
     bgColor: "#EDFFF0",
     accentColor: "#079737",
-    image: "/images/health-literacy.png",
+    image: "/images/health-literacy.webp",
     imageWidth: "53.5%",
   },
 ];
@@ -99,7 +99,7 @@ export default function Home() {
             >
               <div className="w-[20rem] h-[20rem] sm:w-[22rem] sm:h-[22rem] relative">
                 <Image
-                  src="/images/portrait-frame.png"
+                  src="/images/portrait-frame.webp"
                   alt=""
                   fill
                   className="object-contain"
@@ -125,7 +125,7 @@ export default function Home() {
               >
                 <div className="relative w-full" style={{ paddingBottom: "118.2%" }}>
                   <Image
-                    src="/images/portrait-only.png"
+                    src="/images/portrait-only.webp"
                     alt="Portrait of Bhagyashree Phadnis"
                     fill
                     className="object-contain object-bottom"

@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 };
 
 const leftColumn = [
-  { src: "/images/illustrations/voix-poster-1.png", alt: "Voix poster design 1", width: 1374, height: 2056 },
-  { src: "/images/illustrations/voix-tote.png", alt: "Voix tote bag mockup", width: 3000, height: 2250 },
-  { src: "/images/illustrations/melancholy-wall.png", alt: "Melancholy wall treatment installation", width: 1920, height: 1080 },
+  { src: "/images/illustrations/voix-poster-1.webp", alt: "Voix poster design 1", width: 1374, height: 2056 },
+  { src: "/images/illustrations/voix-tote.webp", alt: "Voix tote bag mockup", width: 3000, height: 2250 },
+  { src: "/images/illustrations/melancholy-wall.webp", alt: "Melancholy wall treatment installation", width: 1920, height: 1080 },
   { src: "/images/illustrations/melancholy-phone-logo.gif", alt: "Melancholy phone logo mockup", width: 1190, height: 1684 },
 ];
 
 const rightColumn = [
-  { src: "/images/illustrations/voix-poster-2.png", alt: "Voix poster design 2", width: 1375, height: 2056 },
-  { src: "/images/illustrations/voix-notebook.png", alt: "Voix notebook design", width: 4000, height: 3000 },
-  { src: "/images/illustrations/melancholy-poster.png", alt: "Melancholy poster design", width: 863, height: 1290 },
+  { src: "/images/illustrations/voix-poster-2.webp", alt: "Voix poster design 2", width: 1375, height: 2056 },
+  { src: "/images/illustrations/voix-notebook.webp", alt: "Voix notebook design", width: 4000, height: 3000 },
+  { src: "/images/illustrations/melancholy-poster.webp", alt: "Melancholy poster design", width: 863, height: 1290 },
   { src: "/images/illustrations/melancholy-logo.gif", alt: "Melancholy animated logo", width: 794, height: 480 },
 ];
 

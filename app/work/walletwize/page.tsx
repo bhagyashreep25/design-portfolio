@@ -299,14 +299,14 @@ export default function WalletWizePage() {
             {/* Row 4: two images side by side */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Image
-                src="/images/walletwize/featured-image-5.png"
+                src="/images/walletwize/featured-image-5.webp"
                 alt="WalletWize featured screen 5"
                 width={1200}
                 height={800}
                 className="w-full h-auto rounded-xl"
               />
               <Image
-                src="/images/walletwize/featured-image-6.png"
+                src="/images/walletwize/featured-image-6.webp"
                 alt="WalletWize featured screen 6"
                 width={1200}
                 height={800}
@@ -399,7 +399,7 @@ export default function WalletWizePage() {
                   {/* Image breaking out at bottom */}
                   <div style={{ marginBottom: -100 }}>
                     <Image
-                      src="/images/health-literacy.png"
+                      src="/images/health-literacy.webp"
                       alt="Health literacy project mockup"
                       width={600}
                       height={450}
