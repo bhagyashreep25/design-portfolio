@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import AnimateIn from "@/components/AnimateIn";
+import DottedBackground from "@/components/DottedBackground";
 
 const workItems = [
   {
@@ -38,7 +39,6 @@ const workItems = [
     bgColor: "#f4ebff",
     accentColor: "#00228a",
     image: "/images/school-counselling.webp",
-    comingSoon: true,
   },
   {
     slug: "walletwize",
@@ -80,7 +80,8 @@ const workItems = [
 
 export default function Home() {
   return (
-    <>
+    <div>
+      <DottedBackground />
       {/* Hero */}
       <section
         className="max-w-5xl mx-auto px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
@@ -342,6 +343,6 @@ export default function Home() {
           })}
         </div>
       </section>
-    </>
+    </div>
   );
 }

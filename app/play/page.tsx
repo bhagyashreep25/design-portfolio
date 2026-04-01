@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
+import DottedBackground from "@/components/DottedBackground";
 
 export const metadata: Metadata = {
   title: "Play — Bhagyashree Phadnis",
@@ -25,6 +26,7 @@ const rightColumn = [
 export default function PlayPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-20">
+      <DottedBackground />
       <header className="mb-16">
         <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
           <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-[#4c4c4c] mb-5">

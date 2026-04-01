@@ -9,6 +9,7 @@ export default function Navbar() {
   const workHref = pathname === "/" ? "#projects" : "/#projects";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -21,6 +22,13 @@ export default function Navbar() {
     // Small delay then fade in
     const timer = setTimeout(() => setNavVisible(true), 50);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const linkClass = (href?: string) => {
@@ -43,7 +51,9 @@ export default function Navbar() {
 
   return (
     <header
-      className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm transition-opacity duration-300 ease-out"
+      className={`sticky top-0 z-50 transition-all duration-300 ease-out ${
+        scrolled ? "bg-white/70 backdrop-blur-sm" : "bg-transparent"
+      }`}
       style={{ opacity: navVisible ? 1 : 0 }}
     >
       <nav

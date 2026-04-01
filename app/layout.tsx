@@ -4,6 +4,7 @@ import { Manrope, Caveat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SparkleCursor from "@/components/SparkleCursor";
 
 const recoleta = localFont({
   src: [
@@ -75,6 +76,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${recoleta.variable} ${manrope.variable} ${caveat.variable}`}>
       <body className="font-sans antialiased">
+        <SparkleCursor />
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />

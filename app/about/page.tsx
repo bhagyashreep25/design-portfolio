@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AnimateIn from "@/components/AnimateIn";
+import DottedBackground from "@/components/DottedBackground";
 
 export const metadata: Metadata = {
   title: "About — Bhagyashree Phadnis",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
+      <DottedBackground />
       <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
         <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-[#4c4c4c] mb-12">
           A glimpse into my world
