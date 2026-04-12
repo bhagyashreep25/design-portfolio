@@ -18,7 +18,7 @@ const labItems = [
     ),
     oneLiner: "Sing it your way",
     description:
-      "A web tool that generates karaoke tracks from any song and lets me shift pitch on the fly. Free karaoke tracks online sound terrible — and bad backing tracks make even good singers sound off. So I built one that doesn't compromise the performance.",
+      "A web tool that generates karaoke tracks from any song. Free karaoke tracks online sound terrible — and bad backing tracks make even good singers sound off. So I built one that doesn't compromise the performance.",
     tags: ["Website"],
     image: "/images/ai-labs/strippd.png",
     imageAlt: "strippd karaoke track generator",
