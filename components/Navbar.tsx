@@ -76,6 +76,11 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
+            <Link href="/ai-labs" className={linkClass("/ai-labs")}>
+              AI Labs
+            </Link>
+          </li>
+          <li>
             <Link href="/play" className={linkClass("/play")}>
               Play
             </Link>
@@ -134,6 +139,15 @@ export default function Navbar() {
                 onClick={() => setMenuOpen(false)}
               >
                 Work
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/ai-labs"
+                className={mobileLinkClass("/ai-labs")}
+                onClick={() => setMenuOpen(false)}
+              >
+                AI Labs
               </Link>
             </li>
             <li>
