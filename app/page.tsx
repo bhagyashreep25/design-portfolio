@@ -39,6 +39,7 @@ const workItems = [
     bgColor: "#f4ebff",
     accentColor: "#00228a",
     image: "/images/school-counselling.webp",
+    passwordProtected: true,
   },
   {
     slug: "walletwize",
@@ -276,6 +277,15 @@ export default function Home() {
                       Coming Soon
                     </p>
                   )}
+                  {item.passwordProtected && (
+                    <p className="flex items-center gap-1.5 text-xs tracking-widest text-[#8f8f8f] uppercase mb-4">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                        <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      Password Protected
+                    </p>
+                  )}
                   <Image
                     src={item.image}
                     alt={`${item.slug} project mockup`}
@@ -315,6 +325,24 @@ export default function Home() {
                       }}
                     >
                       Coming Soon
+                    </p>
+                  )}
+
+                  {/* Password Protected label */}
+                  {item.passwordProtected && (
+                    <p
+                      className="absolute w-[300px] flex items-center gap-1.5 text-xs tracking-widest text-[#8f8f8f] uppercase"
+                      style={{
+                        bottom: 50,
+                        left: isEven ? 50 : undefined,
+                        right: isEven ? undefined : 50,
+                      }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                        <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      Password Protected
                     </p>
                   )}
 

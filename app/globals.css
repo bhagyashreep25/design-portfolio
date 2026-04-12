@@ -38,6 +38,29 @@ body.sparkle-cursor .cursor-pointer {
   cursor: inherit !important;
 }
 
+/* Hand-drawn underline */
+.hand-underline {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='8' viewBox='0 0 120 8'><path d='M0 4 C15 2, 35 6, 60 4 C85 2, 105 6, 120 4' stroke='%23a582df' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-size: 120px 8px;
+  padding-bottom: 4px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Polaroid marquee */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 35s linear infinite;
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
