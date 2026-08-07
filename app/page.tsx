@@ -3,24 +3,34 @@ import Link from "next/link";
 import AnimateIn from "@/components/AnimateIn";
 import DottedBackground from "@/components/DottedBackground";
 
-const workItems = [
+type WorkItem = {
+  slug: string;
+  description: React.ReactNode;
+  tags: string[];
+  bgColor: string;
+  accentColor: string;
+  image: string;
+  imageWidth?: string;
+  comingSoon?: boolean;
+  passwordProtected?: boolean;
+};
+
+const workItems: WorkItem[] = [
   {
-    slug: "ai-growth-engine",
+    slug: "bbq-nation",
     description: (
       <>
-        I designed an agentic{" "}
-        <strong className="font-semibold text-[#009294]">AI growth</strong>{" "}
-        engine to automate{" "}
-        <strong className="font-semibold text-[#009294]">
-          organic search visibility
-        </strong>
+        I redesigned{" "}
+        <strong className="font-semibold text-[#EA5B1E]">table booking</strong>{" "}
+        for India&rsquo;s favourite{" "}
+        <strong className="font-semibold text-[#EA5B1E]">barbecue chain</strong>
       </>
     ),
-    tags: ["AI", "SaaS"],
-    bgColor: "#E6FAFA",
-    accentColor: "#00228a",
-    image: "/images/ai-growth-engine.webp",
-    comingSoon: true,
+    tags: ["B2C", "Mobile", "Web"],
+    bgColor: "#FFF1E8",
+    accentColor: "#EA5B1E",
+    image: "/images/bbq-nation.webp",
+    passwordProtected: true,
   },
   {
     slug: "school-counselling",
@@ -59,23 +69,22 @@ const workItems = [
     image: "/images/finance-management.webp",
   },
   {
-    slug: "clover-ai",
+    slug: "ai-growth-engine",
     description: (
       <>
-        I designed an{" "}
-        <strong className="font-semibold text-[#079737]">AI-powered</strong> app
-        to enhance{" "}
-        <strong className="font-semibold text-[#079737]">
-          health literacy
-        </strong>{" "}
-        for all
+        I designed an agentic{" "}
+        <strong className="font-semibold text-[#009294]">AI growth</strong>{" "}
+        engine to automate{" "}
+        <strong className="font-semibold text-[#009294]">
+          organic search visibility
+        </strong>
       </>
     ),
-    tags: ["HealthTech", "AI"],
-    bgColor: "#EDFFF0",
-    accentColor: "#079737",
-    image: "/images/health-literacy.webp",
-    imageWidth: "53.5%",
+    tags: ["AI", "SaaS"],
+    bgColor: "#E6FAFA",
+    accentColor: "#00228a",
+    image: "/images/ai-growth-engine.webp",
+    comingSoon: true,
   },
 ];
 
@@ -289,8 +298,10 @@ export default function Home() {
                   <Image
                     src={item.image}
                     alt={`${item.slug} project mockup`}
-                    width={600}
-                    height={450}
+                    width={1200}
+                    height={730}
+                    sizes="(min-width: 768px) 55vw, calc(100vw - 96px)"
+                    quality={90}
                     className="w-full h-auto"
                   />
                 </div>
@@ -359,8 +370,10 @@ export default function Home() {
                     <Image
                       src={item.image}
                       alt={`${item.slug} project mockup`}
-                      width={600}
-                      height={450}
+                      width={1200}
+                      height={730}
+                      sizes="(min-width: 1072px) 640px, (min-width: 768px) 60vw, 100vw"
+                      quality={90}
                       className="w-full h-auto"
                     />
                   </div>

@@ -8,6 +8,32 @@ export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
+/**
+ * The three shipped case studies, in home page order. These live as their own
+ * routes rather than in data/projects.ts, so they're listed here for the
+ * "Browse Other Projects" rail.
+ */
+const LIVE_PROJECTS = [
+  {
+    slug: "bbq-nation",
+    title: "Barbeque Nation",
+    subtitle: "Redesigning table booking for India's favourite barbecue chain",
+    coverColor: "#FFF1E8",
+  },
+  {
+    slug: "school-counselling",
+    title: "School Counselling",
+    subtitle: "A dashboard to streamline school counselling processes",
+    coverColor: "#f4ebff",
+  },
+  {
+    slug: "walletwize",
+    title: "WalletWize",
+    subtitle: "Simplifying personal finances for young adults",
+    coverColor: "#FFEDFB",
+  },
+];
+
 export async function generateMetadata({
   params,
 }: {
@@ -53,8 +79,9 @@ export default async function CaseStudyPage({
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  const currentIndex = projects.findIndex((p) => p.slug === project.slug);
-  const otherProjects = projects.filter((_, i) => i !== currentIndex);
+  // Point at live work only. clover-ai is archived and ai-growth-engine
+  // hasn't launched, so neither belongs in a "browse other projects" rail.
+  const otherProjects = LIVE_PROJECTS.filter((p) => p.slug !== project.slug);
 
   return (
     <article>

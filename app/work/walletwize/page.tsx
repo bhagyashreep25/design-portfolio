@@ -373,36 +373,66 @@ export default function WalletWizePage() {
           <h2 className="font-serif text-2xl sm:text-3xl text-[#4c4c4c] mb-10">
             Browse Other Projects
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2">
-            <Link href="/work/clover-ai" className="group block">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <Link href="/work/bbq-nation" className="group block">
               <div className="relative">
-                {/* Text positioned above the card */}
                 <div className="relative z-10 px-8" style={{ marginBottom: -25 }}>
                   <p className="font-serif text-[28px] font-light text-[#4c4c4c] leading-[1.3]">
-                    I designed an{" "}
-                    <strong className="font-semibold text-[#079737]">
-                      AI-powered
+                    I redesigned{" "}
+                    <strong className="font-semibold text-[#EA5B1E]">
+                      table booking
                     </strong>{" "}
-                    app to enhance{" "}
-                    <strong className="font-semibold text-[#079737]">
-                      health literacy
-                    </strong>{" "}
-                    for all
+                    for India&rsquo;s favourite{" "}
+                    <strong className="font-semibold text-[#EA5B1E]">
+                      barbecue chain
+                    </strong>
                   </p>
                 </div>
-
-                {/* Background card */}
                 <div
                   className="rounded-[1.25rem] pt-[80px] px-8"
-                  style={{ backgroundColor: "#EDFFF0" }}
+                  style={{ backgroundColor: "#FFF1E8" }}
                 >
-                  {/* Image breaking out at bottom */}
                   <div style={{ marginBottom: -100 }}>
                     <Image
-                      src="/images/health-literacy.webp"
-                      alt="Health literacy project mockup"
-                      width={600}
-                      height={450}
+                      src="/images/bbq-nation.webp"
+                      alt="Barbeque Nation project mockup"
+                      width={1200}
+                      height={730}
+                      sizes="(min-width: 640px) 460px, calc(100vw - 112px)"
+                      quality={90}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Link>
+            <Link href="/work/school-counselling" className="group block">
+              <div className="relative">
+                <div className="relative z-10 px-8" style={{ marginBottom: -25 }}>
+                  <p className="font-serif text-[28px] font-light text-[#4c4c4c] leading-[1.3]">
+                    I built a{" "}
+                    <strong className="font-semibold text-[#8C63D1]">
+                      dashboard
+                    </strong>{" "}
+                    to streamline{" "}
+                    <strong className="font-semibold text-[#8C63D1]">
+                      school counselling
+                    </strong>{" "}
+                    processes
+                  </p>
+                </div>
+                <div
+                  className="rounded-[1.25rem] pt-[80px] px-8"
+                  style={{ backgroundColor: "#f4ebff" }}
+                >
+                  <div style={{ marginBottom: -100 }}>
+                    <Image
+                      src="/images/school-counselling.webp"
+                      alt="School counselling project mockup"
+                      width={1200}
+                      height={730}
+                      sizes="(min-width: 640px) 460px, calc(100vw - 112px)"
+                      quality={90}
                       className="w-full h-auto"
                     />
                   </div>
