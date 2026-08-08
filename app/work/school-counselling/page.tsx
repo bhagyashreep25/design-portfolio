@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import AnimateIn from "@/components/AnimateIn";
+import BrowseOtherProjects from "@/components/BrowseOtherProjects";
 import PasswordGate from "@/components/PasswordGate";
+import { isUnlocked } from "@/lib/gate";
 
 export const metadata: Metadata = {
-  title: "CounselSync — Bhagyashree Phadnis",
+  title: "CounselSync",
   description:
     "Streamlining school counselling processes — one dashboard at a time.",
 };
@@ -29,9 +30,11 @@ const summaryItems = [
   },
 ];
 
-export default function SchoolCounsellingPage() {
+export default async function SchoolCounsellingPage() {
+  // Gate on the server: a locked visitor is never sent the case study at all.
+  if (!(await isUnlocked())) return <PasswordGate />;
+
   return (
-    <PasswordGate password="counselsync2024">
     <article>
       {/* Header */}
       <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
@@ -459,79 +462,8 @@ export default function SchoolCounsellingPage() {
 
       {/* Browse Other Projects */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
-        <section className="max-w-5xl mx-auto px-6 pb-32">
-          <h2 className="font-serif text-2xl sm:text-3xl text-[#4c4c4c] mb-10">
-            Browse Other Projects
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <Link href="/work/bbq-nation" className="group block">
-              <div className="relative">
-                <div className="relative z-10 px-8" style={{ marginBottom: -25 }}>
-                  <p className="font-serif text-[28px] font-light text-[#4c4c4c] leading-[1.3]">
-                    I redesigned{" "}
-                    <strong className="font-semibold text-[#EA5B1E]">
-                      table booking
-                    </strong>{" "}
-                    for India&rsquo;s favourite{" "}
-                    <strong className="font-semibold text-[#EA5B1E]">
-                      barbecue chain
-                    </strong>
-                  </p>
-                </div>
-                <div
-                  className="rounded-[1.25rem] pt-[80px] px-8"
-                  style={{ backgroundColor: "#FFF1E8" }}
-                >
-                  <div style={{ marginBottom: -100 }}>
-                    <Image
-                      src="/images/bbq-nation.webp"
-                      alt="Barbeque Nation project mockup"
-                      width={1200}
-                      height={730}
-                      sizes="(min-width: 640px) 460px, calc(100vw - 112px)"
-                      quality={90}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link href="/work/walletwize" className="group block">
-              <div className="relative">
-                <div className="relative z-10 px-8" style={{ marginBottom: -25 }}>
-                  <p className="font-serif text-[28px] font-light text-[#4c4c4c] leading-[1.3]">
-                    I created a{" "}
-                    <strong className="font-semibold text-[#C9259A]">
-                      finance management
-                    </strong>{" "}
-                    app to simplify money for{" "}
-                    <strong className="font-semibold text-[#C9259A]">
-                      young adults
-                    </strong>
-                  </p>
-                </div>
-                <div
-                  className="rounded-[1.25rem] pt-[80px] px-8"
-                  style={{ backgroundColor: "#FFEDFB" }}
-                >
-                  <div style={{ marginBottom: -100 }}>
-                    <Image
-                      src="/images/finance-management.webp"
-                      alt="WalletWize project mockup"
-                      width={1200}
-                      height={730}
-                      sizes="(min-width: 640px) 460px, calc(100vw - 112px)"
-                      quality={90}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </section>
+        <BrowseOtherProjects currentSlug="school-counselling" />
       </AnimateIn>
     </article>
-    </PasswordGate>
   );
 }

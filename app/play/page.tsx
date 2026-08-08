@@ -4,7 +4,7 @@ import AnimateIn from "@/components/AnimateIn";
 import DottedBackground from "@/components/DottedBackground";
 
 export const metadata: Metadata = {
-  title: "Play — Bhagyashree Phadnis",
+  title: "Play",
   description:
     "Graphic design and illustration work by Bhagyashree Phadnis — posters, branding, and visual explorations.",
 };

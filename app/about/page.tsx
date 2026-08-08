@@ -4,23 +4,23 @@ import AnimateIn from "@/components/AnimateIn";
 import DottedBackground from "@/components/DottedBackground";
 
 const polaroids = [
-  { src: "/images/about/1.JPG", alt: "Messy archive photo 1", rotate: -3 },
-  { src: "/images/about/2.jpg", alt: "Messy archive photo 2", rotate: 2 },
-  { src: "/images/about/3.jpg", alt: "Messy archive photo 3", rotate: -1.5 },
-  { src: "/images/about/4.jpg", alt: "Messy archive photo 4", rotate: 3 },
-  { src: "/images/about/5.png", alt: "Messy archive photo 5", rotate: -2 },
-  { src: "/images/about/6.JPG", alt: "Messy archive photo 6", rotate: 1.5 },
-  { src: "/images/about/7.JPG", alt: "Messy archive photo 7", rotate: -2.5 },
-  { src: "/images/about/8.JPG", alt: "Messy archive photo 8", rotate: 2.5 },
-  { src: "/images/about/9.JPG", alt: "Messy archive photo 9", rotate: -1 },
-  { src: "/images/about/10.JPG", alt: "Messy archive photo 10", rotate: 3 },
-  { src: "/images/about/11.JPG", alt: "Messy archive photo 11", rotate: -2 },
-  { src: "/images/about/12.jpg", alt: "Messy archive photo 12", rotate: 1 },
-  { src: "/images/about/13.PNG", alt: "Messy archive photo 13", rotate: -3 },
+  { src: "/images/about/1.JPG", alt: "Smiling on a waterfront stone promenade, wearing a beanie and a black-and-white plaid cardigan", rotate: -3 },
+  { src: "/images/about/2.jpg", alt: "A river rushing over a weir past a stone harbor wall, a museum building in the background", rotate: 2 },
+  { src: "/images/about/3.jpg", alt: "Black-and-white ink illustration of a face dissolving into abstract jigsaw shapes, an original drawing signed 'Bhags'", rotate: -1.5 },
+  { src: "/images/about/4.jpg", alt: "Ocean waves breaking at sunset under an orange sky", rotate: 3 },
+  { src: "/images/about/5.png", alt: "Dusk skyline of bare trees and the Washington Monument silhouetted against an orange sunset", rotate: -2 },
+  { src: "/images/about/6.JPG", alt: "A latte with leaf-pattern foam art next to an open laptop and a glass of water in a cafe", rotate: 1.5 },
+  { src: "/images/about/7.JPG", alt: "A coastal cliffside trail overlooking the ocean, with wooden steps leading down to the water", rotate: -2.5 },
+  { src: "/images/about/8.JPG", alt: "A Christmas market stall stocked with fruit crates and gift baskets under a glass-roofed Victorian arcade", rotate: 2.5 },
+  { src: "/images/about/9.JPG", alt: "A giant illuminated globe suspended inside a wood-panelled library hall lined with marble busts", rotate: -1 },
+  { src: "/images/about/10.JPG", alt: "The U.S. Capitol dome viewed from the plaza, with two people walking up the path", rotate: 3 },
+  { src: "/images/about/11.JPG", alt: "Boathouses and docks along a river on a sunny day, with a motorboat moored at the dock", rotate: -2 },
+  { src: "/images/about/12.jpg", alt: "Silhouetted in a stained-glass window archway, overlooking a city street below", rotate: 1 },
+  { src: "/images/about/13.PNG", alt: "A rainy courtyard with a palm tree, a lion-head wall fountain, and outdoor cafe seating", rotate: -3 },
 ];
 
 export const metadata: Metadata = {
-  title: "About — Bhagyashree Phadnis",
+  title: "About",
   description:
     "About Bhagyashree Phadnis — an engineer turned product designer based in Mumbai.",
 };

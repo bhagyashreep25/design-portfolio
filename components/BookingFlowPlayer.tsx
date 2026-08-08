@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play, RotateCcw } from "react-feather";
-import PhoneFrame, { SCREEN_H, SCREEN_W } from "@/components/PhoneFrame";
+import PhoneFrame, { SCREEN_W } from "@/components/PhoneFrame";
 
 /** A simulated tap, positioned in the screen's own design coordinates. */
 interface Tap {

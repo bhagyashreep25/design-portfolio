@@ -5,6 +5,7 @@ import DottedBackground from "@/components/DottedBackground";
 
 type WorkItem = {
   slug: string;
+  title: string;
   description: React.ReactNode;
   tags: string[];
   bgColor: string;
@@ -18,6 +19,7 @@ type WorkItem = {
 const workItems: WorkItem[] = [
   {
     slug: "bbq-nation",
+    title: "Barbeque Nation",
     description: (
       <>
         I redesigned{" "}
@@ -34,6 +36,7 @@ const workItems: WorkItem[] = [
   },
   {
     slug: "school-counselling",
+    title: "CounselSync",
     description: (
       <>
         I built a{" "}
@@ -53,6 +56,7 @@ const workItems: WorkItem[] = [
   },
   {
     slug: "walletwize",
+    title: "WalletWize",
     description: (
       <>
         I created a{" "}
@@ -70,6 +74,7 @@ const workItems: WorkItem[] = [
   },
   {
     slug: "ai-growth-engine",
+    title: "AI Growth Engine",
     description: (
       <>
         I designed an agentic{" "}
@@ -259,7 +264,7 @@ export default function Home() {
               item.comingSoon ? (
                 <div className={className}>{children}</div>
               ) : (
-                <Link href={`/work/${item.slug}`} aria-label={`View ${item.slug} project`} className={className}>{children}</Link>
+                <Link href={`/work/${item.slug}`} aria-label={`View ${item.title} project`} className={className}>{children}</Link>
               );
             return (
               <AnimateIn
@@ -297,7 +302,7 @@ export default function Home() {
                   )}
                   <Image
                     src={item.image}
-                    alt={`${item.slug} project mockup`}
+                    alt={`${item.title} project mockup`}
                     width={1200}
                     height={730}
                     sizes="(min-width: 768px) 55vw, calc(100vw - 96px)"
@@ -369,7 +374,7 @@ export default function Home() {
                   >
                     <Image
                       src={item.image}
-                      alt={`${item.slug} project mockup`}
+                      alt={`${item.title} project mockup`}
                       width={1200}
                       height={730}
                       sizes="(min-width: 1072px) 640px, (min-width: 768px) 60vw, 100vw"

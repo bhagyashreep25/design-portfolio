@@ -2,14 +2,36 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
 import DottedBackground from "@/components/DottedBackground";
+import LoopingVideo from "@/components/LoopingVideo";
 
 export const metadata: Metadata = {
-  title: "AI Labs — Bhagyashree Phadnis",
+  title: "AI Labs",
   description:
     "AI-powered tools built from scratch by Bhagyashree Phadnis — karaoke tracks, coffee tracking, Figma plugins, and meal planning.",
 };
 
-const labItems = [
+type LabMedia =
+  | { kind: "image"; src: string; alt: string }
+  | {
+      kind: "video";
+      src: string;
+      poster: string;
+      label: string;
+      width: number;
+      height: number;
+    };
+
+interface LabItem {
+  title: React.ReactNode;
+  oneLiner: string;
+  description: string;
+  tags: string[];
+  mediaType: "phone" | "image";
+  media: LabMedia;
+  tryItUrl: string | null;
+}
+
+const labItems: LabItem[] = [
   {
     title: (
       <>
@@ -20,9 +42,12 @@ const labItems = [
     description:
       "A web tool that generates karaoke tracks from any song. Free karaoke tracks online sound terrible — and bad backing tracks make even good singers sound off. So I built one that doesn't compromise the performance.",
     tags: ["Website"],
-    image: "/images/ai-labs/strippd.png",
-    imageAlt: "strippd karaoke track generator",
-    mediaType: "image" as const,
+    mediaType: "image",
+    media: {
+      kind: "image",
+      src: "/images/ai-labs/strippd.png",
+      alt: "strippd karaoke track generator",
+    },
     tryItUrl: "https://bagsphadnis-strippd.hf.space/",
   },
   {
@@ -35,9 +60,15 @@ const labItems = [
     description:
       "A minimal coffee tracker for logging every blend I try across roasters all over the country. My notes app was chaos. This just feels right — cute, hands-free, and built for someone who treats coffee like a quiet obsession.",
     tags: ["App"],
-    image: "/images/ai-labs/coffee-tracker.gif",
-    imageAlt: "brew'd coffee tracker app demo",
     mediaType: "phone" as const,
+    media: {
+      kind: "video" as const,
+      src: "/images/ai-labs/coffee-tracker.mp4",
+      poster: "/images/ai-labs/coffee-tracker-poster.webp",
+      label: "brew'd coffee tracker app demo",
+      width: 640,
+      height: 1392,
+    },
     tryItUrl: null,
   },
   {
@@ -51,9 +82,15 @@ const labItems = [
     description:
       "A Figma plugin that scans every section and prototype flow on a page and surfaces all shareable links in one place. No more selecting each frame, hitting share, copying, repeating. Just open, grab, go.",
     tags: ["Plugin"],
-    image: "/images/ai-labs/linkd.gif",
-    imageAlt: "Link'd Figma plugin demo",
     mediaType: "image" as const,
+    media: {
+      kind: "video" as const,
+      src: "/images/ai-labs/linkd.mp4",
+      poster: "/images/ai-labs/linkd-poster.webp",
+      label: "Link'd Figma plugin demo",
+      width: 1000,
+      height: 1280,
+    },
     tryItUrl: null,
   },
   {
@@ -66,9 +103,15 @@ const labItems = [
     description:
       "A meal planner that thinks the way I do — start with the day, then layer in lunch and dinner around it. Keeps my go-to recipes in one spot, builds shopping lists without friction. Not another meal app that tries to plan my whole life — just one that fits mine.",
     tags: ["App"],
-    image: "/images/ai-labs/meal-planner.gif",
-    imageAlt: "Sage meal planner app demo",
     mediaType: "phone" as const,
+    media: {
+      kind: "video" as const,
+      src: "/images/ai-labs/meal-planner.mp4",
+      poster: "/images/ai-labs/meal-planner-poster.webp",
+      label: "Sage meal planner app demo",
+      width: 640,
+      height: 1392,
+    },
     tryItUrl: null,
   },
 ];
@@ -116,7 +159,7 @@ export default function AILabs() {
                 >
                   {/* Media */}
                   <div className={`w-full flex justify-center ${item.mediaType === "image" ? "md:w-[55%]" : "md:w-1/2"}`}>
-                    {item.mediaType === "phone" && item.image ? (
+                    {item.mediaType === "phone" ? (
                       /* iPhone mockup */
                       <div className="relative w-[240px] sm:w-[270px]">
                         <div className="relative bg-[#1a1a1a] rounded-[50px] p-[10px] shadow-2xl">
@@ -124,34 +167,49 @@ export default function AILabs() {
                             className="relative rounded-[40px] overflow-hidden bg-black"
                             style={{ aspectRatio: "9/19.5" }}
                           >
-                            <Image
-                              src={item.image}
-                              alt={item.imageAlt}
-                              width={390}
-                              height={844}
-                              className="w-full h-full object-cover"
-                              unoptimized={item.image.endsWith(".gif")}
-                            />
+                            {item.media.kind === "video" ? (
+                              <LoopingVideo
+                                src={item.media.src}
+                                poster={item.media.poster}
+                                label={item.media.label}
+                                className="absolute inset-0 h-full w-full object-cover"
+                              />
+                            ) : (
+                              <Image
+                                src={item.media.src}
+                                alt={item.media.alt}
+                                width={390}
+                                height={844}
+                                className="w-full h-full object-cover"
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
-                    ) : item.mediaType === "image" && item.image ? (
-                      /* Regular image */
-                      <div className="w-full rounded-2xl overflow-hidden shadow-lg">
-                        <Image
-                          src={item.image}
-                          alt={item.imageAlt}
-                          width={800}
-                          height={500}
-                          className="w-full h-auto"
-                          unoptimized={item.image.endsWith(".gif")}
+                    ) : item.media.kind === "video" ? (
+                      /* Regular video, aspect reserved to match the source so it doesn't jump on load */
+                      <div
+                        className="w-full max-w-[420px] rounded-2xl overflow-hidden shadow-lg"
+                        style={{ aspectRatio: `${item.media.width} / ${item.media.height}` }}
+                      >
+                        <LoopingVideo
+                          src={item.media.src}
+                          poster={item.media.poster}
+                          label={item.media.label}
+                          className="h-full w-full object-cover"
                         />
                       </div>
                     ) : (
-                      <div
-                        className="w-full aspect-[16/10] rounded-2xl"
-                        style={{ backgroundColor: "#e8e8e8" }}
-                      />
+                      /* Regular image */
+                      <div className="w-full rounded-2xl overflow-hidden shadow-lg">
+                        <Image
+                          src={item.media.src}
+                          alt={item.media.alt}
+                          width={800}
+                          height={500}
+                          className="w-full h-auto"
+                        />
+                      </div>
                     )}
                   </div>
 

@@ -25,17 +25,19 @@ app/               # All routes and root layout
   layout.tsx       # Root layout: Navbar, fonts, metadata
   page.tsx         # Home (hero + project grid)
   about/           # /about page
-  illustrations/   # /illustrations gallery page
-  work/[slug]/     # Dynamic case study pages
+  play/            # /play gallery page
+  ai-labs/         # /ai-labs page
+  work/<slug>/     # Each case study is its own hand-built route (no data file)
+  api/unlock/      # Password-gate cookie exchange (see lib/gate.ts)
   globals.css      # Base styles and accessibility defaults
 
 components/        # Shared UI
-  Navbar.tsx       # Only client component (needs usePathname)
+  Navbar.tsx       # Client component (needs usePathname)
   Footer.tsx       # Server component
+  BrowseOtherProjects.tsx  # "Browse Other Projects" rail, shared by every case study
 
-data/
-  projects.ts      # All project content + TypeScript types
-                   # Single source of truth — edit here to add/change projects
+lib/
+  gate.ts          # Server-only password-gate logic (never import from a client component)
 
 public/            # Static assets (images, resume.pdf)
 ```
@@ -59,8 +61,12 @@ No test suite currently.
 
 ## Adding a Project
 
-1. Add a `Project` object to [data/projects.ts:47](data/projects.ts#L47)
-2. The new `/work/[slug]` page is generated automatically via `generateStaticParams`
+There's no data file — each case study is a hand-built route.
+
+1. Create `app/work/<slug>/page.tsx`, following the structure of an existing one (e.g. `app/work/walletwize/page.tsx`)
+2. Add the project to `workItems` in [app/page.tsx](app/page.tsx) so it appears on the home page
+3. Add it to `LIVE_PROJECTS` in [components/BrowseOtherProjects.tsx](components/BrowseOtherProjects.tsx) so the other case studies link to it
+4. If it should require a password, wrap the page in `PasswordGate` and gate on `isUnlocked()` from `lib/gate.ts` — see `app/work/bbq-nation/page.tsx` for the pattern
 
 ---
 
@@ -68,4 +74,4 @@ No test suite currently.
 
 Check these files when relevant:
 
-- [.claude/docs/architectural_patterns.md](.claude/docs/architectural_patterns.md) — discriminated union sections, server/client component split, static generation pattern, layout container convention, accessibility baseline, path aliases
+- [.claude/docs/architectural_patterns.md](.claude/docs/architectural_patterns.md) — hand-built case study pages, password gate, server/client component split, layout container convention, accessibility baseline, path aliases

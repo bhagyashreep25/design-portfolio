@@ -34,7 +34,7 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: {
     default: "Bhagyashree Phadnis — Product Designer",
-    template: "%s",
+    template: "%s — Bhagyashree Phadnis",
   },
   description:
     "Portfolio of Bhagyashree Phadnis, an engineer turned product designer specializing in visually appealing, data-driven experiences.",
@@ -75,7 +75,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${recoleta.variable} ${manrope.variable} ${caveat.variable}`}>
+      <head>
+        {/* If JS never runs, AnimateIn's content would stay invisible forever
+            since it relies on a client effect to reveal itself. noscript's
+            contents are only parsed as real markup when scripting is off, so
+            this style only ever takes effect in exactly that case. */}
+        <noscript>
+          <style>{`.js-animate { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
+      </head>
       <body className="font-sans antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-[#4c4c4c] focus:shadow-lg"
+        >
+          Skip to content
+        </a>
         <SparkleCursor />
         <Navbar />
         <main id="main-content">{children}</main>
