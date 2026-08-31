@@ -103,9 +103,9 @@ export default function Home() {
         className="max-w-5xl mx-auto px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
         aria-labelledby="hero-heading"
       >
-        {/* Portrait with angled text */}
+        {/* Portrait */}
         <div className="flex justify-center mb-10">
-          <div className="relative" style={{ transform: "scale(0.95)" }}>
+          <div className="relative">
             {/* Circle border — fades in first */}
             <AnimateIn
               trigger="load"
@@ -114,7 +114,7 @@ export default function Home() {
               delay={250}
               easing="ease-out"
             >
-              <div className="w-[20rem] h-[20rem] sm:w-[22rem] sm:h-[22rem] relative">
+              <div className="w-[18rem] h-[18rem] sm:w-[19.8rem] sm:h-[19.8rem] relative">
                 <Image
                   src="/images/portrait-frame.webp"
                   alt=""
@@ -152,24 +152,6 @@ export default function Home() {
               </AnimateIn>
             </div>
 
-            {/* Angled Caveat text — absolutely positioned to overlap portrait */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-              <AnimateIn
-                trigger="load"
-                animation="fade-slide-up"
-                slideDistance={300}
-                duration={500}
-                delay={750}
-                easing="ease-out"
-              >
-                <p
-                  className="font-script text-[30px] text-[#8f8f8f] whitespace-nowrap"
-                  style={{ transform: "rotate(-5deg)" }}
-                >
-                  an engineer turned product designer
-                </p>
-              </AnimateIn>
-            </div>
           </div>
         </div>
 
@@ -179,7 +161,7 @@ export default function Home() {
           animation="fade-slide-up"
           slideDistance={300}
           duration={500}
-          delay={1000}
+          delay={750}
           easing="ease-out"
           className="max-w-[940px]"
         >
@@ -188,7 +170,30 @@ export default function Home() {
           </p>
         </AnimateIn>
 
-        {/* "I specialize in creating..." */}
+        {/* "I'm an engineer turned product designer..." */}
+        <AnimateIn
+          trigger="load"
+          animation="fade-slide-up"
+          slideDistance={300}
+          duration={500}
+          delay={1000}
+          easing="ease-out"
+          className="max-w-[940px]"
+        >
+          <h1
+            id="hero-heading"
+            className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-light tracking-tight text-[#4c4c4c] leading-[1.15] mb-6 max-w-[90%]"
+          >
+            I&rsquo;m an{" "}
+            <strong className="font-medium text-[#a582df]">engineer</strong>{" "}
+            turned product designer with a{" "}
+            <strong className="font-medium text-[#a582df]">
+              master&rsquo;s in HCI
+            </strong>
+          </h1>
+        </AnimateIn>
+
+        {/* "4+ years designing..." */}
         <AnimateIn
           trigger="load"
           animation="fade-slide-up"
@@ -198,35 +203,18 @@ export default function Home() {
           easing="ease-out"
           className="max-w-[940px]"
         >
-          <h1
-            id="hero-heading"
-            className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-light tracking-tight text-[#4c4c4c] leading-[1.15] mb-6 max-w-[90%]"
-          >
-            I specialize in creating{" "}
-            <strong className="font-medium text-[#a582df]">
-              visually appealing
-            </strong>
-            , data-driven experiences that{" "}
-            <strong className="font-medium text-[#a582df]">
-              enhance the lives
-            </strong>{" "}
-            of users
-          </h1>
-        </AnimateIn>
-
-        {/* "I've helped companies..." */}
-        <AnimateIn
-          trigger="load"
-          animation="fade-slide-up"
-          slideDistance={300}
-          duration={500}
-          delay={1500}
-          easing="ease-out"
-          className="max-w-[940px]"
-        >
           <p className="font-serif text-[24px] text-[#8f8f8f] leading-relaxed tracking-normal max-w-2xl">
-            I&rsquo;ve helped companies balance usability &amp; aesthetics,
-            increase customer satisfaction and decrease error rates.
+            4+ years designing across EdTech, consumer, and AI, currently at
+            Lollypop Design Studio.
+            <br />
+            On the side, I build{" "}
+            <Link
+              href="/ai-labs"
+              className="whitespace-nowrap text-[#6b6b6b] underline underline-offset-4 decoration-[#c4c4c4] hover:decoration-[#6b6b6b] transition-colors"
+            >
+              personal tools
+            </Link>{" "}
+            to help me navigate my life.
           </p>
         </AnimateIn>
       </section>
