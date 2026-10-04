@@ -68,11 +68,14 @@ const LIVE_PROJECTS: LiveProject[] = [
 ];
 
 /**
- * Both cards in a row must end up the same height however much a
- * description wraps or a badge is present — so the title block reserves
+ * From sm up, both cards in a row must end up the same height however much
+ * a description wraps or a badge is present — so the title block reserves
  * three lines' worth of space (the longest description here wraps to three
  * at this card width), and the badge always occupies its row (just hidden,
- * not removed) rather than only when the target is protected.
+ * not removed) rather than only when the target is protected. On phones the
+ * cards stack, so neither is needed and the empty badge row collapses.
+ *
+ * On hover the mockup lifts and tilts, like the home page cards.
  */
 export default function BrowseOtherProjects({
   currentSlug,
@@ -86,6 +89,9 @@ export default function BrowseOtherProjects({
       <h2 className="font-serif text-2xl sm:text-3xl text-[#4c4c4c] mb-10">
         Browse Other Projects
       </h2>
+      {/* On phones each card is one coloured block with the title inside it.
+          From sm up the title sits above the block and the mockup hangs out
+          of its bottom, like the home page cards. */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {others.map((project) => (
           <Link
@@ -93,21 +99,18 @@ export default function BrowseOtherProjects({
             href={`/work/${project.slug}`}
             className="group block"
           >
-            <div className="relative">
-              <div
-                className="relative z-10 min-h-[112px] px-8"
-                style={{ marginBottom: -25 }}
-              >
+            <div
+              className="relative rounded-[1.25rem] bg-[var(--card-bg)] pt-10 sm:rounded-none sm:bg-transparent sm:pt-0"
+              style={{ "--card-bg": project.bgColor } as React.CSSProperties}
+            >
+              <div className="relative z-10 px-8 sm:mb-4 sm:min-h-[112px]">
                 <p className="font-serif text-[28px] font-light text-[#4c4c4c] leading-[1.3]">
                   {project.description}
                 </p>
               </div>
-              <div
-                className="rounded-[1.25rem] pt-12 px-8"
-                style={{ backgroundColor: project.bgColor }}
-              >
+              <div className="rounded-[1.25rem] pt-4 px-8 pb-8 sm:bg-[var(--card-bg)] sm:pt-12 sm:pb-0">
                 <p
-                  className="relative z-10 mb-8 flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#8f8f8f]"
+                  className={`relative z-10 mb-6 sm:mb-8 flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#8f8f8f] ${project.passwordProtected ? "" : "max-sm:hidden"}`}
                   style={{ visibility: project.passwordProtected ? "visible" : "hidden" }}
                   aria-hidden={!project.passwordProtected}
                 >
@@ -124,7 +127,9 @@ export default function BrowseOtherProjects({
                   </svg>
                   Password Protected
                 </p>
-                <div style={{ marginBottom: -100 }}>
+                <div
+                  className="sm:-mb-[100px] transition-[transform,filter] duration-500 ease-out group-hover:-translate-y-2 group-hover:rotate-1 group-hover:drop-shadow-[0_16px_20px_rgba(76,76,76,0.12)] group-focus-visible:-translate-y-2 group-focus-visible:rotate-1"
+                >
                   <Image
                     src={project.image}
                     alt={project.imageAlt}

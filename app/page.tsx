@@ -2,6 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import AnimateIn from "@/components/AnimateIn";
 import DottedBackground from "@/components/DottedBackground";
+import PortraitDraw from "@/components/PortraitDraw";
+
+// Hero portrait animation. true = drawn from the crown down, then a circle drawn
+// behind the head last (components/PortraitDraw.tsx). false = the original circle fade-in with
+// the face sliding up into it.
+const DRAW_PORTRAIT = true;
+
+// How far a project card's image breaks out past the card (as a negative
+// offset). 100% is the card's width, so (100vw - 100%) / 2 is the margin
+// beside it; clipping to that keeps the image on screen at tablet widths.
+const BREAKOUT = "calc(-1 * min(85px, (100vw - 100%) / 2 - 8px))";
+
+// Hero text waits for the portrait: 750ms after the original, or starts partway
+// through the drawn version (it runs ~3.3s) so the page never feels stuck.
+const HERO_TEXT_DELAY = DRAW_PORTRAIT ? 1500 : 750;
 
 type WorkItem = {
   slug: string;
@@ -50,7 +65,7 @@ const workItems: WorkItem[] = [
     ),
     tags: ["B2B", "EdTech"],
     bgColor: "#f4ebff",
-    accentColor: "#00228a",
+    accentColor: "#8C63D1",
     image: "/images/school-counselling.webp",
     passwordProtected: true,
   },
@@ -106,52 +121,59 @@ export default function Home() {
         {/* Portrait */}
         <div className="flex justify-center mb-10">
           <div className="relative">
-            {/* Circle border — fades in first */}
-            <AnimateIn
-              trigger="load"
-              animation="fade-in"
-              duration={500}
-              delay={250}
-              easing="ease-out"
-            >
-              <div className="w-[18rem] h-[18rem] sm:w-[19.8rem] sm:h-[19.8rem] relative">
-                <Image
-                  src="/images/portrait-frame.webp"
-                  alt=""
-                  fill
-                  className="object-contain"
-                  priority
-                  aria-hidden="true"
-                />
+            {DRAW_PORTRAIT ? (
+              <div className="pd-hover w-[18rem] h-[18rem] sm:w-[19.8rem] sm:h-[19.8rem] relative">
+                <PortraitDraw />
               </div>
-            </AnimateIn>
+            ) : (
+              <>
+                {/* Circle border — fades in first */}
+                <AnimateIn
+                  trigger="load"
+                  animation="fade-in"
+                  duration={500}
+                  delay={250}
+                  easing="ease-out"
+                >
+                  <div className="w-[18rem] h-[18rem] sm:w-[19.8rem] sm:h-[19.8rem] relative">
+                    <Image
+                      src="/images/portrait-frame.webp"
+                      alt=""
+                      fill
+                      className="object-contain"
+                      priority
+                      aria-hidden="true"
+                    />
+                  </div>
+                </AnimateIn>
 
-            {/* Face — slides up into the circle from below, overflow visible at top */}
-            <div
-              className="absolute inset-0"
-              style={{ clipPath: "inset(-50% -50% 0 -50%)", borderRadius: "50%" }}
-            >
-              <AnimateIn
-                trigger="load"
-                animation="fade-slide-up"
-                slideDistance={300}
-                duration={500}
-                delay={500}
-                easing="ease-out"
-                className="absolute bottom-0 left-0 w-full"
-              >
-                <div className="relative w-full" style={{ paddingBottom: "118.2%" }}>
-                  <Image
-                    src="/images/portrait-only.webp"
-                    alt="Portrait of Bhagyashree Phadnis"
-                    fill
-                    className="object-contain object-bottom"
-                    priority
-                  />
+                {/* Face — slides up into the circle from below, overflow visible at top */}
+                <div
+                  className="absolute inset-0"
+                  style={{ clipPath: "inset(-50% -50% 0 -50%)", borderRadius: "50%" }}
+                >
+                  <AnimateIn
+                    trigger="load"
+                    animation="fade-slide-up"
+                    slideDistance={300}
+                    duration={500}
+                    delay={500}
+                    easing="ease-out"
+                    className="absolute bottom-0 left-0 w-full"
+                  >
+                    <div className="relative w-full" style={{ paddingBottom: "118.2%" }}>
+                      <Image
+                        src="/images/portrait-only.webp"
+                        alt="Portrait of Bhagyashree Phadnis"
+                        fill
+                        className="object-contain object-bottom"
+                        priority
+                      />
+                    </div>
+                  </AnimateIn>
                 </div>
-              </AnimateIn>
-            </div>
-
+              </>
+            )}
           </div>
         </div>
 
@@ -161,7 +183,7 @@ export default function Home() {
           animation="fade-slide-up"
           slideDistance={300}
           duration={500}
-          delay={750}
+          delay={HERO_TEXT_DELAY}
           easing="ease-out"
           className="max-w-[940px]"
         >
@@ -176,7 +198,7 @@ export default function Home() {
           animation="fade-slide-up"
           slideDistance={300}
           duration={500}
-          delay={1000}
+          delay={HERO_TEXT_DELAY + 250}
           easing="ease-out"
           className="max-w-[940px]"
         >
@@ -199,7 +221,7 @@ export default function Home() {
           animation="fade-slide-up"
           slideDistance={300}
           duration={500}
-          delay={1250}
+          delay={HERO_TEXT_DELAY + 500}
           easing="ease-out"
           className="max-w-[940px]"
         >
@@ -239,7 +261,7 @@ export default function Home() {
             id="work-heading"
             className="font-serif text-[40px] font-medium text-[#6b6b6b]"
           >
-            My Latest Work
+            <span className="squiggle squiggle-reveal">My Latest Work</span>
           </h2>
         </AnimateIn>
 
@@ -247,7 +269,7 @@ export default function Home() {
         <div className="space-y-10 md:space-y-[140px]">
           {workItems.map((item, index) => {
             const isEven = index % 2 === 0;
-            const className = `group block transition-transform duration-300 ease-out hover:scale-[1.07]${item.comingSoon ? "" : " cursor-pointer"}`;
+            const className = `group block${item.comingSoon ? "" : " cursor-pointer"}`;
             const card = (children: React.ReactNode) =>
               item.comingSoon ? (
                 <div className={className}>{children}</div>
@@ -316,6 +338,23 @@ export default function Home() {
                     <p className="font-serif text-[35px] font-light text-[#4c4c4c] leading-[1.3]">
                       {item.description}
                     </p>
+                    {!item.comingSoon && (
+                      <span
+                        aria-hidden="true"
+                        className="mt-5 inline-flex items-center gap-1.5 font-script text-[24px] opacity-0 -translate-x-2 transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0"
+                        style={{ color: item.accentColor }}
+                      >
+                        View case study
+                        <svg width="22" height="12" viewBox="0 0 22 12" fill="none" className="mt-1">
+                          <path
+                            d="M1 7C7 6 13 6.5 20 6M15 2C17 4 19 5 21 6C19 7 17 9 15 11"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </span>
+                    )}
                   </div>
 
                   {/* Coming Soon label */}
@@ -350,13 +389,15 @@ export default function Home() {
                     </p>
                   )}
 
-                  {/* Image — breaking out of card */}
+                  {/* Image — breaking out of card; lifts and tilts away from the text on hover.
+                      It breaks out by up to 85px, but never further than the page margin
+                      beside the card (less 8px), so it doesn't run off narrower screens. */}
                   <div
-                    className={`absolute ${item.imageWidth ? "" : "md:w-[55%] lg:w-[63%]"}`}
+                    className={`absolute transition-[transform,filter] duration-500 ease-out group-hover:-translate-y-2 group-hover:drop-shadow-[0_16px_20px_rgba(76,76,76,0.12)] ${isEven ? "group-hover:rotate-1" : "group-hover:-rotate-1"} ${item.imageWidth ? "" : "md:w-[55%] lg:w-[63%]"}`}
                     style={{
                       top: -75,
-                      right: isEven ? -85 : undefined,
-                      left: isEven ? undefined : -85,
+                      right: isEven ? BREAKOUT : undefined,
+                      left: isEven ? undefined : BREAKOUT,
                       ...(item.imageWidth ? { width: item.imageWidth } : {}),
                     }}
                   >

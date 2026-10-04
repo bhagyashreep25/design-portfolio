@@ -42,8 +42,8 @@ export default function AboutPage() {
             {[...polaroids, ...polaroids].map((photo, i) => (
               <div
                 key={i}
-                className="shrink-0 bg-white p-3 pb-12 shadow-md"
-                style={{ transform: `rotate(${photo.rotate}deg)`, width: 220 }}
+                className="polaroid shrink-0 bg-white p-3 pb-12 shadow-md"
+                style={{ "--r": `${photo.rotate}deg`, width: 220 } as React.CSSProperties}
               >
                 <div className="relative aspect-square overflow-hidden">
                   <Image
@@ -70,7 +70,10 @@ export default function AboutPage() {
       {/* Cards row — 3 columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16 sm:mb-20">
         <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
-          <div className="rounded-2xl border border-[#e0e0e0] bg-[#fafafa] p-7 sm:p-8 h-full">
+          <div
+            className="rounded-2xl border border-[#e0e0e0] bg-[#fafafa] p-7 sm:p-8 h-full"
+            style={{ "--hu-bg": "#fafafa" } as React.CSSProperties}
+          >
             <h3 className="font-sans text-sm font-medium tracking-[0.12em] uppercase text-[#4c4c4c] mb-4">
               What Inspires Me
             </h3>
@@ -85,7 +88,10 @@ export default function AboutPage() {
         </AnimateIn>
 
         <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
-          <div className="rounded-2xl border border-[#e0e0e0] bg-[#f9f5ff] p-7 sm:p-8 h-full">
+          <div
+            className="rounded-2xl border border-[#e0e0e0] bg-[#f9f5ff] p-7 sm:p-8 h-full"
+            style={{ "--hu-bg": "#f9f5ff" } as React.CSSProperties}
+          >
             <h3 className="font-sans text-sm font-medium tracking-[0.12em] uppercase text-[#4c4c4c] mb-4">
               What Motivates Me
             </h3>
@@ -101,7 +107,10 @@ export default function AboutPage() {
         </AnimateIn>
 
         <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
-          <div className="rounded-2xl border border-[#e0e0e0] bg-[#fafafa] p-7 sm:p-8 h-full">
+          <div
+            className="rounded-2xl border border-[#e0e0e0] bg-[#fafafa] p-7 sm:p-8 h-full"
+            style={{ "--hu-bg": "#fafafa" } as React.CSSProperties}
+          >
             <h3 className="font-sans text-sm font-medium tracking-[0.12em] uppercase text-[#4c4c4c] mb-4">
               What Drives Me
             </h3>
@@ -154,8 +163,7 @@ export default function AboutPage() {
       {/* Sticky note — What am I doing these days? */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
         <div
-          className="relative bg-[#f9f5ff] rounded-lg shadow-md p-8 sm:p-10"
-          style={{ transform: "rotate(-1.5deg)" }}
+          className="pinned-note relative bg-[#f9f5ff] rounded-lg shadow-md p-8 sm:p-10"
         >
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,11 +176,11 @@ export default function AboutPage() {
             What am I doing these days?
           </h3>
           <ul className="text-[15px] text-[#6b6b6b] leading-[1.8] space-y-2">
-            <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">&#9749;</span> Brewing my own cup of coffee with a trusty old aeropress</li>
-            <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">&#9889;</span> Desperately waiting for the new Harry Potter show (while complaining about how the Marauders show should&rsquo;ve been greenlit)</li>
-            <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">&#127911;</span> Obsessing over the musical genius that is Tame Impala</li>
-            <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">&#9992;&#65039;</span> Planning my next getaway</li>
-            <li className="flex items-start gap-2"><span className="shrink-0 mt-0.5">&#127947;&#65039;</span> Trying to maintain a consistent workout routine</li>
+            <li className="flex items-start gap-2"><span className="emoji emoji-stir shrink-0 mt-0.5">&#9749;</span> Brewing my own cup of coffee with a trusty old aeropress</li>
+            <li className="flex items-start gap-2"><span className="emoji emoji-flicker shrink-0 mt-0.5">&#9889;</span> Desperately waiting for the new Harry Potter show (while complaining about how the Marauders show should&rsquo;ve been greenlit)</li>
+            <li className="flex items-start gap-2"><span className="emoji emoji-bounce shrink-0 mt-0.5">&#127911;</span> Obsessing over the musical genius that is Tame Impala</li>
+            <li className="flex items-start gap-2"><span className="emoji emoji-fly shrink-0 mt-0.5">&#9992;&#65039;</span> Planning my next getaway</li>
+            <li className="flex items-start gap-2"><span className="emoji emoji-lift shrink-0 mt-0.5">&#127947;&#65039;</span> Trying to maintain a consistent workout routine</li>
           </ul>
         </div>
       </AnimateIn>

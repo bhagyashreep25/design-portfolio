@@ -38,15 +38,22 @@ body.sparkle-cursor .cursor-pointer {
   cursor: inherit !important;
 }
 
-/* Hand-drawn underline */
+/* Hand-drawn underline. It draws itself in once its AnimateIn is in view: a
+   strip of the card's own colour (--hu-bg) sits over the wave and shrinks
+   off to the right. Both are backgrounds, so the text is never covered and
+   wrapped lines each get their own underline. */
 .hand-underline {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='8' viewBox='0 0 120 8'><path d='M0 4 C15 2, 35 6, 60 4 C85 2, 105 6, 120 4' stroke='%23a582df' stroke-width='1.5' fill='none'/></svg>");
-  background-repeat: repeat-x;
-  background-position: bottom;
-  background-size: 120px 8px;
+  background:
+    linear-gradient(var(--hu-bg, #fff), var(--hu-bg, #fff)) right bottom / 0% 8px no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='8' viewBox='0 0 120 8'><path d='M0 4 C15 2, 35 6, 60 4 C85 2, 105 6, 120 4' stroke='%23a582df' stroke-width='1.5' fill='none'/></svg>") left bottom / 120px 8px repeat-x;
   padding-bottom: 4px;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+  transition: background-size 0.9s cubic-bezier(0.45, 0, 0.35, 1) 0.4s;
+}
+
+[data-visible="false"] .hand-underline {
+  background-size: 100% 8px, 120px 8px;
 }
 
 /* Polaroid marquee */
@@ -61,6 +68,355 @@ body.sparkle-cursor .cursor-pointer {
   animation: marquee-scroll 35s linear infinite;
 }
 
+/* Hovering the strip pauses it; the polaroid under the cursor straightens
+   out of its tilt (--r) and lifts */
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.polaroid {
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease-out;
+}
+
+.polaroid:hover {
+  transform: translateY(-10px) scale(1.04);
+  box-shadow: 0 18px 30px -12px rgba(76, 76, 76, 0.35);
+}
+
+/* "What am I doing these days?" note: swings on its pin when hovered, and
+   each line's emoji does its own little thing */
+.pinned-note {
+  transform: rotate(-1.5deg);
+  transform-origin: 50% 0;
+}
+
+.pinned-note:hover {
+  animation: note-swing 1.4s ease-out;
+}
+
+@keyframes note-swing {
+  0% { transform: rotate(-1.5deg); }
+  20% { transform: rotate(1.5deg); }
+  45% { transform: rotate(-3deg); }
+  70% { transform: rotate(-0.5deg); }
+  100% { transform: rotate(-1.5deg); }
+}
+
+.emoji {
+  display: inline-block;
+}
+
+li:hover > .emoji-stir { animation: emoji-stir 0.7s ease-in-out; }
+li:hover > .emoji-flicker { animation: emoji-flicker 0.6s steps(1, end); }
+li:hover > .emoji-bounce { animation: emoji-bounce 0.8s ease-in-out; }
+li:hover > .emoji-fly { animation: emoji-fly 0.8s ease-in-out; }
+li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
+
+@keyframes emoji-stir {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-14deg); }
+  50% { transform: rotate(12deg); }
+  75% { transform: rotate(-6deg); }
+}
+
+@keyframes emoji-flicker {
+  0%, 100% { opacity: 1; }
+  20% { opacity: 0.25; }
+  35% { opacity: 1; }
+  55% { opacity: 0.4; }
+  70% { opacity: 1; }
+}
+
+@keyframes emoji-bounce {
+  0%, 50%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-5px); }
+  75% { transform: translateY(-3px); }
+}
+
+@keyframes emoji-fly {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  35% { transform: translate(2px, -3px) rotate(-10deg); }
+  65% { transform: translate(1px, -1px) rotate(4deg); }
+}
+
+@keyframes emoji-lift {
+  0%, 50%, 100% { transform: translateY(0) scale(1); }
+  25%, 75% { transform: translateY(-4px) scale(1.12); }
+}
+
+/* Portrait draw (components/PortraitDraw.tsx). Resting state is the finished
+   portrait; each animation runs from its "from" frame, held during its delay. */
+.pd-anim {
+  animation-fill-mode: backwards;
+}
+
+.pd-draw {
+  stroke-dasharray: var(--len);
+  animation-name: pd-draw;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1);
+}
+
+@keyframes pd-draw {
+  from { stroke-dashoffset: var(--len); }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Erases the band outside the circle in step with the circle being drawn
+   (same path direction, duration and easing), so the crop follows the pen */
+.pd-crop-sweep {
+  stroke-dasharray: var(--len) var(--len);
+  stroke-dashoffset: calc(var(--len) * -1);
+  animation-name: pd-crop-sweep;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1);
+}
+
+@keyframes pd-crop-sweep {
+  from { stroke-dashoffset: 0; }
+}
+
+.pd-settle {
+  animation-name: pd-settle;
+  animation-duration: 0.35s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes pd-settle {
+  from { opacity: 0; }
+}
+
+/* Portrait hover (.pd-hover wraps the portrait on the home page): blush and
+   sparkles */
+.pd-blush {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.pd-hover:hover .pd-blush {
+  opacity: 1;
+}
+
+/* Hover smile: each half of the lips widens and tips its corner up, pivoting
+   just under the lips (LIPS in PortraitDraw.tsx) */
+.pd-smile {
+  transform-box: view-box;
+  transform-origin: 684px 666px;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pd-hover:hover .pd-smile-left {
+  transform: rotate(8deg) scaleX(1.08);
+}
+
+.pd-hover:hover .pd-smile-right {
+  transform: rotate(-8deg) scaleX(1.08);
+}
+
+.pd-sparkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0) rotate(-45deg);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
+}
+
+.pd-hover:hover .pd-sparkle {
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+/* Loopy wave underline that draws in from the left. Each tile's path runs
+   half a loop past both edges so neighbouring tiles join without a seam, and
+   tiles keep their exact width (no "round" scaling) so they land on whole
+   pixels. A white stroke under the wave hides the dotted grid wherever the
+   two cross.
+   .squiggle-hover: nav links, on hover/focus (and stays on for the current page).
+   .squiggle-reveal: section heading, once, when its AnimateIn scrolls into view. */
+.squiggle {
+  position: relative;
+}
+
+.squiggle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-repeat: repeat-x;
+  clip-path: inset(0 100% 0 0);
+  pointer-events: none;
+}
+
+.squiggle-hover::after {
+  bottom: -9px;
+  height: 8px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M-6 4C-6 7 0 7 0 4C0 1 6 1 6 4C6 7 12 7 12 4C12 1 18 1 18 4' stroke='white' stroke-width='5' fill='none'/><path d='M-6 4C-6 7 0 7 0 4C0 1 6 1 6 4C6 7 12 7 12 4C12 1 18 1 18 4' stroke='%23a582df' stroke-width='2' fill='none'/></svg>");
+  background-size: 12px 8px;
+  transition: clip-path 0.35s ease-out;
+}
+
+.squiggle-hover:hover::after,
+.squiggle-hover:focus-visible::after,
+.squiggle-hover[aria-current="page"]::after {
+  clip-path: inset(0 0 0 0);
+}
+
+.squiggle-reveal::after {
+  bottom: -16px;
+  height: 12px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'><path d='M-10 6C-10 10.5 0 10.5 0 6C0 1.5 10 1.5 10 6C10 10.5 20 10.5 20 6C20 1.5 30 1.5 30 6' stroke='white' stroke-width='5.5' fill='none'/><path d='M-10 6C-10 10.5 0 10.5 0 6C0 1.5 10 1.5 10 6C10 10.5 20 10.5 20 6C20 1.5 30 1.5 30 6' stroke='%23a582df' stroke-width='2.5' fill='none'/></svg>");
+  background-size: 20px 12px;
+  transition: clip-path 0.8s cubic-bezier(0.45, 0, 0.35, 1) 0.35s;
+}
+
+[data-visible="true"] .squiggle-reveal::after {
+  clip-path: inset(0 0 0 0);
+}
+
+/* AI Labs phone mockups: tilt toward the text on hover while a glare sweeps
+   across the screen */
+.phone-tilt {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.phone-tilt-left:hover {
+  transform: translateY(-6px) rotate(2deg);
+}
+
+.phone-tilt-right:hover {
+  transform: translateY(-6px) rotate(-2deg);
+}
+
+.phone-glare::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.phone-tilt:hover .phone-glare::after {
+  transform: translateX(120%);
+  transition: transform 0.9s ease-out;
+}
+
+/* Illustrations grid (components/Gallery.tsx): a piece lifts and tilts like
+   a print picked up off a desk. --tilt alternates so neighbours lean apart. */
+.gallery-piece {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s ease-out;
+}
+
+.gallery-piece:hover,
+.gallery-piece:focus-visible {
+  transform: translateY(-6px) rotate(var(--tilt, 1.5deg));
+  filter: drop-shadow(0 16px 20px rgba(76, 76, 76, 0.14));
+}
+
+/* ---- Case study micro-interactions ----
+   Colour comes from --cs-accent, set on each case study's <article>.
+   Scroll-triggered pieces hide while any AnimateIn around them is still
+   [data-visible="false"], so a nested AnimateIn can hold them back until
+   its own content is in view. */
+
+/* Pen marks (components/HandMark.tsx) */
+.hand-mark {
+  position: relative;
+  display: inline-block;
+}
+
+.hand-mark svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hand-mark-circle svg {
+  left: -22%;
+  top: -16%;
+  width: 144%;
+  height: 132%;
+}
+
+.hand-mark-underline svg {
+  left: -4%;
+  top: 92%;
+  width: 108%;
+  height: 0.4em;
+}
+
+.hand-mark path {
+  fill: none;
+  stroke: var(--cs-accent, #a582df);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.45, 0, 0.35, 1) 0.4s;
+}
+
+[data-visible="false"] .hand-mark path {
+  stroke-dashoffset: 1;
+}
+
+/* Handwritten notes: the text fades in, then its arrow draws itself and the
+   arrowhead lands. --d staggers one note after another; --sw sets the stroke
+   for arrows drawn at a different scale. */
+.hand-note text,
+.hand-note-text {
+  font-family: var(--font-caveat), cursive;
+  transition: opacity 0.4s ease-out var(--d, 0s);
+}
+
+.hand-note text {
+  font-size: 48px;
+  fill: var(--cs-accent, #a582df);
+}
+
+.hand-note-text {
+  font-size: 24px;
+  line-height: 1;
+  color: var(--cs-accent, #a582df);
+}
+
+.hand-note path {
+  fill: none;
+  stroke: var(--cs-accent, #a582df);
+  stroke-width: var(--sw, 3.5);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.45, 0, 0.35, 1) calc(var(--d, 0s) + 0.3s);
+}
+
+.hand-note .hand-note-head {
+  transition-duration: 0.2s;
+  transition-delay: calc(var(--d, 0s) + 1.2s);
+}
+
+[data-visible="false"] .hand-note text,
+[data-visible="false"] .hand-note-text {
+  opacity: 0;
+}
+
+[data-visible="false"] .hand-note path {
+  stroke-dashoffset: 1;
+}
+
+/* Hero notes (components/HeroNotes.tsx) are drawn in the image's pixel
+   space, so on phones, where the image is ~340px wide, they need larger
+   text and strokes to stay legible */
+@media (max-width: 767px) {
+  .hero-notes {
+    --sw: 7;
+  }
+
+  .hero-notes text {
+    font-size: 72px;
+  }
+}
+
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -70,5 +426,11 @@ body.sparkle-cursor .cursor-pointer {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* The rule above keeps animation delays, which would hold the portrait
+     hidden for a couple of seconds. Skip straight to the finished drawing. */
+  .pd-anim {
+    animation: none !important;
   }
 }

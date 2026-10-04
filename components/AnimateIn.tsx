@@ -88,7 +88,7 @@ export default function AnimateIn({
       };
 
   return (
-    <div ref={ref} className={`js-animate ${className}`} style={styles}>
+    <div ref={ref} className={`js-animate ${className}`} style={styles} data-visible={visible}>
       {children}
     </div>
   );

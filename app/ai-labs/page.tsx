@@ -22,7 +22,10 @@ type LabMedia =
     };
 
 interface LabItem {
-  title: React.ReactNode;
+  name: string;
+  subtitle: string;
+  /** small pen doodle drawn above the title, in a 40×40 box */
+  doodle: string[];
   oneLiner: string;
   description: string;
   tags: string[];
@@ -33,11 +36,13 @@ interface LabItem {
 
 const labItems: LabItem[] = [
   {
-    title: (
-      <>
-        <span className="font-light">strippd</span> — Karaoke Track Generator
-      </>
-    ),
+    name: "strippd",
+    subtitle: "Karaoke Track Generator",
+    doodle: [
+      "M14 31a5 4 0 1 1-1-4V9l17-4v20",
+      "M30 25a5 4 0 1 1-1-4",
+      "M13 15l17-4",
+    ],
     oneLiner: "Sing it your way",
     description:
       "A web tool that generates karaoke tracks from any song. Free karaoke tracks online sound terrible — and bad backing tracks make even good singers sound off. So I built one that doesn't compromise the performance.",
@@ -51,11 +56,14 @@ const labItems: LabItem[] = [
     tryItUrl: "https://bagsphadnis-strippd.hf.space/",
   },
   {
-    title: (
-      <>
-        <span className="font-light">brew&rsquo;d</span> — Coffee Tracker
-      </>
-    ),
+    name: "brew\u2019d",
+    subtitle: "Coffee Tracker",
+    doodle: [
+      "M8 19h21v8a8 8 0 0 1-8 8h-5a8 8 0 0 1-8-8z",
+      "M29 21h3a4 4 0 0 1 0 8h-3",
+      "M14 14c-3-3 3-5 0-9",
+      "M21 14c-3-3 3-5 0-9",
+    ],
     oneLiner: "Every blend, remembered",
     description:
       "A minimal coffee tracker for logging every blend I try across roasters all over the country. My notes app was chaos. This just feels right — cute, hands-free, and built for someone who treats coffee like a quiet obsession.",
@@ -72,12 +80,13 @@ const labItems: LabItem[] = [
     tryItUrl: null,
   },
   {
-    title: (
-      <>
-        <span className="font-light">Link&rsquo;d</span> — Figma Prototype Link
-        Grabber
-      </>
-    ),
+    name: "Link\u2019d",
+    subtitle: "Figma Prototype Link Grabber",
+    doodle: [
+      "M17 25l-4 4a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 0",
+      "M23 15l4-4a5 5 0 0 1 7 7l-6 6a5 5 0 0 1-7 0",
+      "M16 24l8-8",
+    ],
     oneLiner: "Skip the click-hunt",
     description:
       "A Figma plugin that scans every section and prototype flow on a page and surfaces all shareable links in one place. No more selecting each frame, hitting share, copying, repeating. Just open, grab, go.",
@@ -94,11 +103,12 @@ const labItems: LabItem[] = [
     tryItUrl: null,
   },
   {
-    title: (
-      <>
-        <span className="font-light">Sage</span> — Meal Planner
-      </>
-    ),
+    name: "Sage",
+    subtitle: "Meal Planner",
+    doodle: [
+      "M7 34C7 18 17 8 34 6c0 17-9 28-27 28z",
+      "M7 34L24 17",
+    ],
     oneLiner: "My life, my kitchen, my rules",
     description:
       "A meal planner that thinks the way I do — start with the day, then layer in lunch and dinner around it. Keeps my go-to recipes in one spot, builds shopping lists without friction. Not another meal app that tries to plan my whole life — just one that fits mine.",
@@ -118,7 +128,7 @@ const labItems: LabItem[] = [
 
 export default function AILabs() {
   return (
-    <div>
+    <div style={{ "--cs-accent": "#8C63D1" } as React.CSSProperties}>
       <DottedBackground />
 
       {/* Hero */}
@@ -150,7 +160,7 @@ export default function AILabs() {
             duration={500}
             threshold={0.1}
           >
-            <section className={`flex items-center ${index === 0 ? "py-10" : "min-h-screen"}`}>
+            <section className={`flex items-center ${index === 0 ? "py-10" : "py-16 md:py-28"}`}>
               <div className="max-w-5xl mx-auto px-6 w-full">
                 <div
                   className={`flex flex-col ${
@@ -161,10 +171,12 @@ export default function AILabs() {
                   <div className={`w-full flex justify-center ${item.mediaType === "image" ? "md:w-[55%]" : "md:w-1/2"}`}>
                     {item.mediaType === "phone" ? (
                       /* iPhone mockup */
-                      <div className="relative w-[240px] sm:w-[270px]">
+                      <div
+                        className={`phone-tilt relative w-[240px] sm:w-[270px] ${isEven ? "phone-tilt-left" : "phone-tilt-right"}`}
+                      >
                         <div className="relative bg-[#1a1a1a] rounded-[50px] p-[10px] shadow-2xl">
                           <div
-                            className="relative rounded-[40px] overflow-hidden bg-black"
+                            className="phone-glare relative rounded-[40px] overflow-hidden bg-black"
                             style={{ aspectRatio: "9/19.5" }}
                           >
                             {item.media.kind === "video" ? (
@@ -215,9 +227,23 @@ export default function AILabs() {
 
                   {/* Text content */}
                   <div className={`w-full ${item.mediaType === "image" ? "md:w-[45%]" : "md:w-1/2"}`}>
+                    {/* Pen doodle that draws itself as the section comes in */}
+                    <svg
+                      aria-hidden="true"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 40 40"
+                      className="hand-note mb-2 overflow-visible"
+                      style={{ "--sw": 1.75, "--d": "0.1s" } as React.CSSProperties}
+                    >
+                      {item.doodle.map((d) => (
+                        <path key={d} pathLength={1} d={d} />
+                      ))}
+                    </svg>
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <h2 className="font-serif text-[28px] font-medium text-[#4c4c4c] leading-tight">
-                        {item.title}
+                        <span className="font-light">{item.name}</span>{" "}
+                        &mdash; {item.subtitle}
                       </h2>
                       <div className="flex gap-2 shrink-0 pt-2">
                         {item.tags.map((tag) => (
@@ -244,10 +270,10 @@ export default function AILabs() {
                         href={item.tryItUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-[#8C63D1] hover:text-[#6b45b0] transition-colors mt-5 text-[15px] font-medium"
+                        className="group inline-flex items-center gap-1.5 text-[#8C63D1] hover:text-[#6b45b0] transition-colors mt-5 text-[15px] font-medium"
                       >
                         Try it out
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5">
                           <path d="M3.5 1.75H12.25V10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M12.25 1.75L1.75 12.25" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>

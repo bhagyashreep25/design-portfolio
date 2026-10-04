@@ -3,6 +3,8 @@ import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
 import BookingFlowPlayer from "@/components/BookingFlowPlayer";
 import BrowseOtherProjects from "@/components/BrowseOtherProjects";
+import HandMark from "@/components/HandMark";
+import HeroNotes, { type HeroNote } from "@/components/HeroNotes";
 import OldFlowAudit from "@/components/OldFlowAudit";
 import OldFlowVideo from "@/components/OldFlowVideo";
 import PasswordGate from "@/components/PasswordGate";
@@ -103,12 +105,54 @@ const lessons = [
   },
 ];
 
+// Handwritten notes over the hero, in the image's pixel space (1920×1080)
+const HERO_NOTES: HeroNote[] = [
+  {
+    text: "finally feels booked!",
+    textAt: [330, -62],
+    arrows: [
+      {
+        line: "M470 -38C490 -10 505 30 504 120C503 300 501 500 500 560C500 580 506 592 522 594",
+        head: "M507 581L524 594L508 607",
+      },
+    ],
+    mobile: {
+      textAt: [360, -48],
+      arrows: [
+        {
+          line: "M470 -15C490 30 505 80 504 150C503 320 501 500 500 560C500 580 506 592 522 594",
+          head: "M498 570L526 594L500 618",
+        },
+      ],
+    },
+  },
+  {
+    text: "the best deal, at a glance",
+    textAt: [1560, -62],
+    arrows: [
+      {
+        line: "M1420 -38C1418 0 1416 60 1416 150C1416 190 1410 210 1386 216",
+        head: "M1402 203L1384 216L1403 228",
+      },
+    ],
+    mobile: {
+      textAt: [1500, -48],
+      arrows: [
+        {
+          line: "M1420 -15C1418 20 1416 70 1416 150C1416 190 1410 210 1386 216",
+          head: "M1410 194L1382 216L1412 236",
+        },
+      ],
+    },
+  },
+];
+
 export default async function BbqNationPage() {
   // Gate on the server: a locked visitor is never sent the case study at all.
   if (!(await isUnlocked())) return <PasswordGate />;
 
   return (
-    <article>
+    <article style={{ "--cs-accent": "#EA5B1E" } as React.CSSProperties}>
       {/* Header */}
       <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
         <header className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
@@ -124,15 +168,18 @@ export default async function BbqNationPage() {
       {/* Hero Image */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
         <div className="max-w-5xl mx-auto px-6 mb-10 sm:mb-16">
-          <Image
-            src="/images/bbq-nation/hero-image.webp"
-            alt="Barbeque Nation table booking flow hero visual"
-            width={1920}
-            height={1080}
-            quality={90}
-            className="w-full h-auto rounded-xl"
-            priority
-          />
+          <div className="relative">
+            <Image
+              src="/images/bbq-nation/hero-image.webp"
+              alt="Barbeque Nation table booking flow hero visual"
+              width={1920}
+              height={1080}
+              quality={90}
+              className="w-full h-auto rounded-xl"
+              priority
+            />
+            <HeroNotes notes={HERO_NOTES} above={120} />
+          </div>
         </div>
       </AnimateIn>
 
@@ -248,7 +295,10 @@ export default async function BbqNationPage() {
             <p className="font-serif text-2xl sm:text-3xl font-medium text-[#8f8f8f] leading-snug">
               &ldquo;Customers book through the online channel &mdash; they call
               and ask if their booking is{" "}
-              <strong className="font-bold text-[#EA5B1E]">confirmed</strong> or
+              <strong className="font-bold text-[#EA5B1E]">
+                <HandMark variant="underline">confirmed</HandMark>
+              </strong>{" "}
+              or
               not.&rdquo;
             </p>
             <p className="text-base text-[#8f8f8f] mt-4">
@@ -418,24 +468,47 @@ export default async function BbqNationPage() {
             </p>
           </div>
 
-          <div className="bg-[#FFF1E8] py-16">
+          <div className="bg-[#FFF1E8] pt-16 pb-16 sm:pb-28">
             <div className="max-w-5xl mx-auto px-6">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                {[
-                  { label: "Digital booking share today", value: "26%" },
-                  { label: "Target after the redesign", value: "50%" },
-                  { label: "Customers who are repeat visitors", value: "80%" },
-                ].map((metric) => (
-                  <div key={metric.label} className="flex flex-col justify-end">
-                    <p className="text-base text-[#333333] mb-4">
-                      {metric.label}
-                    </p>
-                    <p className="font-serif text-6xl sm:text-7xl font-bold text-[#EA5B1E]">
-                      {metric.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              {/* Its own AnimateIn so the circle waits until the numbers are on screen */}
+              <AnimateIn trigger="scroll" animation="fade-in" duration={300} threshold={0.6}>
+                <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+                  {[
+                    { label: "Digital booking share today", value: "26%" },
+                    { label: "Target after the redesign", value: "50%", circled: true },
+                    { label: "Customers who are repeat visitors", value: "80%" },
+                  ].map((metric) => (
+                    <div key={metric.label} className="flex flex-col justify-end">
+                      <p className="text-base text-[#333333] mb-4">
+                        {metric.label}
+                      </p>
+                      <p className="font-serif text-6xl sm:text-7xl font-bold text-[#EA5B1E]">
+                        {metric.circled ? <HandMark>{metric.value}</HandMark> : metric.value}
+                      </p>
+                    </div>
+                  ))}
+                  {/* Arrow from today's share to the target, from the first
+                      column's centre to the second's */}
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 300 76"
+                    className="hand-note hidden sm:block absolute top-full mt-1 overflow-visible"
+                    style={{
+                      left: "calc((100% - 4rem) / 6)",
+                      width: "calc(100% / 3 + 2rem / 3)",
+                      aspectRatio: "300 / 76",
+                      "--d": "1.3s",
+                      "--sw": 2,
+                    } as React.CSSProperties}
+                  >
+                    <path pathLength={1} d="M8 4C70 48 214 50 274 8" />
+                    <path pathLength={1} d="M255 8L275 6L270 25" className="hand-note-head" />
+                    <text x="142" y="70" textAnchor="middle" style={{ fontSize: 26 }}>
+                      nearly double
+                    </text>
+                  </svg>
+                </div>
+              </AnimateIn>
             </div>
           </div>
         </section>

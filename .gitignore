@@ -9,3 +9,6 @@ node_modules
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# Source art and retired assets kept locally, not shipped
+design-source/

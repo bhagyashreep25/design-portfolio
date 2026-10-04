@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
 import BrowseOtherProjects from "@/components/BrowseOtherProjects";
+import HandMark from "@/components/HandMark";
+import HeroNotes, { type HeroNote } from "@/components/HeroNotes";
 
 export const metadata: Metadata = {
   title: "WalletWize",
@@ -55,9 +57,51 @@ const goals = [
   },
 ];
 
+// Handwritten notes over the hero, in the image's pixel space (1920×1080)
+const HERO_NOTES: HeroNote[] = [
+  {
+    text: "what’s left, not what’s spent",
+    textAt: [690, -62],
+    arrows: [
+      {
+        line: "M930 -40C952 -10 962 30 961 70C960 100 975 116 1010 120",
+        head: "M994 106L1012 120L994 133",
+      },
+    ],
+    mobile: {
+      textAt: [470, -48],
+      arrows: [
+        {
+          line: "M900 -30C952 -10 962 30 961 70C960 100 975 116 1010 120",
+          head: "M988 98L1014 120L988 142",
+        },
+      ],
+    },
+  },
+  {
+    text: "warns you before you overspend",
+    textAt: [1580, -62],
+    arrows: [
+      {
+        line: "M1430 -40C1420 20 1418 120 1417 250C1416 340 1412 385 1376 398",
+        head: "M1392 384L1374 398L1393 410",
+      },
+    ],
+    mobile: {
+      textAt: [1480, -48],
+      arrows: [
+        {
+          line: "M1430 -15C1420 40 1418 120 1417 250C1416 340 1412 385 1376 398",
+          head: "M1400 376L1372 398L1402 418",
+        },
+      ],
+    },
+  },
+];
+
 export default function WalletWizePage() {
   return (
-    <article>
+    <article style={{ "--cs-accent": "#C9259A" } as React.CSSProperties}>
       {/* Header */}
       <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
         <header className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
@@ -73,14 +117,17 @@ export default function WalletWizePage() {
       {/* Hero Image */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
         <div className="max-w-5xl mx-auto px-6 mb-10 sm:mb-16">
-          <Image
-            src="/images/walletwize/hero-image.svg"
-            alt="WalletWize app hero visual"
-            width={1200}
-            height={675}
-            className="w-full h-auto rounded-xl"
-            priority
-          />
+          <div className="relative">
+            <Image
+              src="/images/walletwize/hero-image.svg"
+              alt="WalletWize app hero visual"
+              width={1200}
+              height={675}
+              className="w-full h-auto rounded-xl"
+              priority
+            />
+            <HeroNotes notes={HERO_NOTES} above={120} />
+          </div>
         </div>
       </AnimateIn>
 
@@ -146,7 +193,7 @@ export default function WalletWizePage() {
               <p className="font-serif text-2xl sm:text-3xl font-medium text-[#8f8f8f] leading-snug">
                 Over the last year, nearly{" "}
                 <strong className="font-bold text-[#C9259A]">
-                  37% of Gen Z
+                  <HandMark variant="underline">37% of Gen Z</HandMark>
                 </strong>{" "}
                 say they&rsquo;ve experienced a{" "}
                 <strong className="font-bold text-[#C9259A]">
@@ -345,23 +392,26 @@ export default function WalletWizePage() {
 
           <div className="bg-[#FFEDFB] py-16">
             <div className="max-w-5xl mx-auto px-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-                {[
-                  { label: "# of downloads in 1st month", value: "5k" },
-                  { label: "Estimated daily active users", value: "1k" },
-                  { label: "Page views per session", value: "+20%" },
-                  { label: "Conversion Rate", value: "5%" },
-                ].map((metric) => (
-                  <div key={metric.label} className="flex flex-col justify-end">
-                    <p className="text-base text-[#333333] mb-4">
-                      {metric.label}
-                    </p>
-                    <p className="font-serif text-6xl sm:text-7xl font-bold text-[#C9259A]">
-                      {metric.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              {/* Its own AnimateIn so the circle waits until the numbers are on screen */}
+              <AnimateIn trigger="scroll" animation="fade-in" duration={300} threshold={0.6}>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+                  {[
+                    { label: "# of downloads in 1st month", value: "5k", circled: true },
+                    { label: "Estimated daily active users", value: "1k" },
+                    { label: "Page views per session", value: "+20%" },
+                    { label: "Conversion Rate", value: "5%" },
+                  ].map((metric) => (
+                    <div key={metric.label} className="flex flex-col justify-end">
+                      <p className="text-base text-[#333333] mb-4">
+                        {metric.label}
+                      </p>
+                      <p className="font-serif text-6xl sm:text-7xl font-bold text-[#C9259A]">
+                        {"circled" in metric ? <HandMark>{metric.value}</HandMark> : metric.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </AnimateIn>
             </div>
           </div>
         </section>

@@ -33,7 +33,7 @@ export default function Navbar() {
 
   const linkClass = (href?: string) => {
     const isActive = href && pathname === href;
-    return `font-serif text-base transition-colors duration-200 ${
+    return `squiggle squiggle-hover font-serif text-base transition-colors duration-200 ${
       isActive
         ? "text-[#8c63d1] font-semibold"
         : "text-[#6b6b6b] hover:text-[#333333]"
@@ -76,12 +76,12 @@ export default function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/ai-labs" className={linkClass("/ai-labs")}>
+            <Link href="/ai-labs" className={linkClass("/ai-labs")} aria-current={pathname === "/ai-labs" ? "page" : undefined}>
               AI Labs
             </Link>
           </li>
           <li>
-            <Link href="/play" className={linkClass("/play")}>
+            <Link href="/play" className={linkClass("/play")} aria-current={pathname === "/play" ? "page" : undefined}>
               Play
             </Link>
           </li>
@@ -97,7 +97,7 @@ export default function Navbar() {
             </a>
           </li>
           <li>
-            <Link href="/about" className={linkClass("/about")}>
+            <Link href="/about" className={linkClass("/about")} aria-current={pathname === "/about" ? "page" : undefined}>
               About
             </Link>
           </li>

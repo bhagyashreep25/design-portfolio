@@ -360,7 +360,7 @@ export default function BookingFlowPlayer() {
   return (
     <div
       ref={rootRef}
-      className="flex flex-col items-center gap-12 sm:flex-row sm:items-center sm:justify-center sm:gap-16"
+      className="flex flex-col items-center gap-20 sm:flex-row sm:items-center sm:justify-center sm:gap-16"
       role="group"
       aria-label="Interactive walkthrough of the redesigned booking flow"
     >
@@ -435,39 +435,53 @@ export default function BookingFlowPlayer() {
 
       {/* Progress + caption */}
       <div className="w-full max-w-md">
-        {/* Stories-style progress indicator */}
-        <ol className="flex gap-1.5">
-          {STEPS.map((step, i) => (
-            <li key={step.short} className="flex-1">
-              <button
-                type="button"
-                onClick={() => jumpTo(i)}
-                aria-label={`Go to ${step.label}`}
-                aria-current={i === activeStep ? "step" : undefined}
-                className="group block w-full"
-              >
-                <span className="block h-[3px] overflow-hidden rounded-full bg-[#EBD5C6]">
-                  <span
-                    ref={(node) => {
-                      progressRefs.current[i] = node;
-                    }}
-                    className="block h-full w-full origin-left rounded-full bg-[#EA5B1E]"
-                    style={{ transform: "scaleX(0)" }}
-                  />
-                </span>
-                <span
-                  className={`mt-2 block text-center text-[11px] uppercase tracking-wide transition-colors ${
-                    i === activeStep
-                      ? "font-semibold text-[#4c4c4c]"
-                      : "text-[#b09b8e] group-hover:text-[#6b6b6b]"
-                  }`}
+        {/* Stories-style progress indicator, with a handwritten nudge that
+            the steps can be tapped (.hand-note in globals.css) */}
+        <div className="relative">
+          <div
+            aria-hidden="true"
+            className="hand-note pointer-events-none absolute bottom-full right-0 mb-2 flex items-end gap-1"
+            style={{ "--d": "0.6s", "--sw": 1.75 } as React.CSSProperties}
+          >
+            <svg width="44" height="34" viewBox="0 0 44 34" className="overflow-visible">
+              <path pathLength={1} d="M40 8C26 7 12 13 8 29" />
+              <path pathLength={1} d="M2 22L8 30L15 23" className="hand-note-head" />
+            </svg>
+            <span className="hand-note-text pb-5">tap a step to skip ahead</span>
+          </div>
+          <ol className="flex gap-1.5">
+            {STEPS.map((step, i) => (
+              <li key={step.short} className="flex-1">
+                <button
+                  type="button"
+                  onClick={() => jumpTo(i)}
+                  aria-label={`Go to ${step.label}`}
+                  aria-current={i === activeStep ? "step" : undefined}
+                  className="group block w-full"
                 >
-                  {step.short}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
+                  <span className="block h-[3px] overflow-hidden rounded-full bg-[#EBD5C6]">
+                    <span
+                      ref={(node) => {
+                        progressRefs.current[i] = node;
+                      }}
+                      className="block h-full w-full origin-left rounded-full bg-[#EA5B1E]"
+                      style={{ transform: "scaleX(0)" }}
+                    />
+                  </span>
+                  <span
+                    className={`mt-2 block text-center text-[11px] uppercase tracking-wide transition-colors ${
+                      i === activeStep
+                        ? "font-semibold text-[#4c4c4c]"
+                        : "text-[#b09b8e] group-hover:text-[#6b6b6b]"
+                    }`}
+                  >
+                    {step.short}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </div>
 
         <div className="mt-8 min-h-[150px] sm:min-h-[128px]">
           <p className="mb-2 font-serif text-2xl font-medium text-[#4c4c4c]">

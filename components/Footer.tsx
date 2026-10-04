@@ -38,13 +38,13 @@ export default function Footer() {
           <h2 className="font-serif text-[26px] font-medium text-[#4c4c4c]">
             Say Hello
           </h2>
-          {/* Hand-drawn arrow */}
+          {/* Hand-drawn arrow, dropped on phones so the row fits on one line */}
           <svg
             width="120"
             height="20"
             viewBox="0 0 120 20"
             fill="none"
-            className="text-[#c0c0c0]"
+            className="hidden sm:block text-[#c0c0c0]"
           >
             <path
               d="M2 12 C25 10, 55 8, 85 9 C95 9.5, 102 10, 108 11"
@@ -65,7 +65,7 @@ export default function Footer() {
         </div>
 
         {/* Social icons */}
-        <ul className="flex items-center gap-8" role="list">
+        <ul className="flex items-center gap-5 sm:gap-8" role="list">
           {socialLinks.map((link) => (
             <li key={link.label}>
               <a

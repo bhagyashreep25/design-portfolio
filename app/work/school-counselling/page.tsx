@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
 import BrowseOtherProjects from "@/components/BrowseOtherProjects";
+import HandMark from "@/components/HandMark";
+import HeroNotes, { type HeroNote } from "@/components/HeroNotes";
+import LoopingVideo from "@/components/LoopingVideo";
 import PasswordGate from "@/components/PasswordGate";
 import { isUnlocked } from "@/lib/gate";
 
@@ -30,12 +33,44 @@ const summaryItems = [
   },
 ];
 
+// One handwritten note under the hero, in the image's pixel space
+// (1920×1080), pointing up at the edge-case screens either side of it
+const HERO_NOTES: HeroNote[] = [
+  {
+    text: "every edge case, designed",
+    textAt: [1150, 1172],
+    arrows: [
+      {
+        line: "M925 1150C840 1150 745 1135 722 1096",
+        head: "M708 1110L721 1094L736 1108",
+      },
+      {
+        line: "M1385 1150C1490 1150 1580 1135 1600 1096",
+        head: "M1586 1108L1600 1094L1614 1110",
+      },
+    ],
+    mobile: {
+      textAt: [1160, 1185],
+      arrows: [
+        {
+          line: "M780 1165C745 1160 725 1140 722 1100",
+          head: "M700 1122L721 1094L744 1120",
+        },
+        {
+          line: "M1540 1165C1580 1160 1598 1140 1600 1100",
+          head: "M1578 1120L1600 1094L1622 1122",
+        },
+      ],
+    },
+  },
+];
+
 export default async function SchoolCounsellingPage() {
   // Gate on the server: a locked visitor is never sent the case study at all.
   if (!(await isUnlocked())) return <PasswordGate />;
 
   return (
-    <article>
+    <article style={{ "--cs-accent": "#8C63D1" } as React.CSSProperties}>
       {/* Header */}
       <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
         <header className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
@@ -51,14 +86,17 @@ export default async function SchoolCounsellingPage() {
       {/* Hero Image */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
         <div className="max-w-5xl mx-auto px-6 mb-10 sm:mb-16">
-          <Image
-            src="/images/school-counselling/hero-image.svg"
-            alt="CounselSync dashboard hero visual"
-            width={1200}
-            height={675}
-            className="w-full h-auto rounded-xl"
-            priority
-          />
+          <div className="relative">
+            <Image
+              src="/images/school-counselling/hero-image.svg"
+              alt="CounselSync dashboard hero visual"
+              width={1200}
+              height={675}
+              className="w-full h-auto rounded-xl"
+              priority
+            />
+            <HeroNotes notes={HERO_NOTES} below={130} />
+          </div>
         </div>
       </AnimateIn>
 
@@ -232,7 +270,7 @@ export default async function SchoolCounsellingPage() {
               &ldquo;The flows looked complete on the surface &mdash; but the moment
               you followed a real user through an edge case, they{" "}
               <strong className="font-bold text-[#8C63D1]">
-                fell apart
+                <HandMark variant="underline">fell apart</HandMark>
               </strong>.&rdquo;
             </p>
           </blockquote>
@@ -271,13 +309,11 @@ export default async function SchoolCounsellingPage() {
       {/* Close Case Flow Visuals */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
         <div className="px-4 sm:px-8 mb-12 sm:mb-20 space-y-4">
-          <Image
-            src="/images/school-counselling/closed-case-flow-counsellor.gif"
-            alt="Counsellor close case flow walkthrough"
-            width={2400}
-            height={800}
+          <LoopingVideo
+            src="/images/school-counselling/closed-case-flow-counsellor.mp4"
+            poster="/images/school-counselling/closed-case-flow-counsellor-poster.webp"
+            label="Counsellor close case flow walkthrough"
             className="w-full h-auto rounded-xl"
-            unoptimized
           />
           <Image
             src="/images/school-counselling/closed-case-flow-student.svg"
@@ -313,13 +349,11 @@ export default async function SchoolCounsellingPage() {
       {/* Case Requests Visuals */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
         <div className="px-4 sm:px-8 mb-12 sm:mb-20">
-          <Image
-            src="/images/school-counselling/case-requests.gif"
-            alt="Case request tracking dashboard with table view and status indicators"
-            width={2400}
-            height={800}
+          <LoopingVideo
+            src="/images/school-counselling/case-requests.mp4"
+            poster="/images/school-counselling/case-requests-poster.webp"
+            label="Case request tracking dashboard with table view and status indicators"
             className="w-full h-auto rounded-xl"
-            unoptimized
           />
         </div>
       </AnimateIn>
@@ -382,23 +416,26 @@ export default async function SchoolCounsellingPage() {
 
           <div className="bg-[#f4ebff] py-16">
             <div className="max-w-5xl mx-auto px-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-                {[
-                  { label: "Flows documented & handed off", value: "150+" },
-                  { label: "Missing flows identified & added", value: "15" },
-                  { label: "Edge cases resolved", value: "25" },
-                  { label: "UI audit issues caught before shipping", value: "90%" },
-                ].map((metric) => (
-                  <div key={metric.label} className="flex flex-col justify-end">
-                    <p className="text-base text-[#333333] mb-4">
-                      {metric.label}
-                    </p>
-                    <p className="font-serif text-6xl sm:text-7xl font-bold text-[#8C63D1]">
-                      {metric.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              {/* Its own AnimateIn so the circle waits until the numbers are on screen */}
+              <AnimateIn trigger="scroll" animation="fade-in" duration={300} threshold={0.6}>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+                  {[
+                    { label: "Flows documented & handed off", value: "150+" },
+                    { label: "Missing flows identified & added", value: "15", circled: true },
+                    { label: "Edge cases resolved", value: "25" },
+                    { label: "UI audit issues caught before shipping", value: "90%" },
+                  ].map((metric) => (
+                    <div key={metric.label} className="flex flex-col justify-end">
+                      <p className="text-base text-[#333333] mb-4">
+                        {metric.label}
+                      </p>
+                      <p className="font-serif text-6xl sm:text-7xl font-bold text-[#8C63D1]">
+                        {"circled" in metric ? <HandMark>{metric.value}</HandMark> : metric.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </AnimateIn>
             </div>
           </div>
         </section>
