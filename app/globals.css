@@ -417,6 +417,200 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 }
 
 
+/* ---- Notes (app/notes) ----
+   Long-form body text for a note. Notes are plain JSX, so every element is
+   styled here rather than with per-element classes. */
+.note-prose {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #4c4c4c;
+}
+
+.note-prose > * + * {
+  margin-top: 1.5rem;
+}
+
+.note-prose h2 {
+  margin-top: 3rem;
+  font-family: var(--font-recoleta), Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1.3;
+}
+
+.note-prose h3 {
+  margin-top: 2.25rem;
+  font-family: var(--font-recoleta), Georgia, serif;
+  font-size: 1.375rem;
+  line-height: 1.35;
+}
+
+.note-prose h2 + *,
+.note-prose h3 + * {
+  margin-top: 0.75rem;
+}
+
+.note-prose strong {
+  font-weight: 700;
+}
+
+.note-prose a {
+  color: #8c63d1;
+  text-decoration: underline;
+  text-decoration-color: #d6c6f1;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease-out;
+}
+
+.note-prose a:hover {
+  text-decoration-color: #8c63d1;
+}
+
+.note-prose ul,
+.note-prose ol {
+  padding-left: 1.5rem;
+}
+
+.note-prose ul {
+  list-style: disc;
+}
+
+.note-prose ol {
+  list-style: decimal;
+}
+
+.note-prose li + li {
+  margin-top: 0.5rem;
+}
+
+.note-prose li::marker {
+  color: #a582df;
+}
+
+.note-prose blockquote {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  border-left: 3px solid #a582df;
+  padding-left: 1.5rem;
+  font-family: var(--font-recoleta), Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.note-prose code {
+  border-radius: 4px;
+  background: #f4f0fb;
+  padding: 0.1em 0.35em;
+  font-size: 0.875em;
+}
+
+.note-prose hr {
+  margin: 3rem auto;
+  width: 4rem;
+  border: 0;
+  border-top: 2px solid #e5e5e5;
+}
+
+.note-prose figure {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.note-prose figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.note-prose figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #8f8f8f;
+}
+
+/* Note stamps (components/NoteStamp.tsx) */
+.note-stamp-art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* On the notes list (components/NoteRow.tsx). Phones: the stamp is always
+   shown, stacked above the note's text. Wider touch screens: always shown,
+   parked left of the date. With a mouse, it's stamped down beside the cursor
+   (dropping in oversized and over-rotated, then springing into place) and
+   NoteRow moves the outer span to follow the pointer. */
+.note-row-stamp {
+  position: absolute;
+  top: 50%;
+  right: 8.5rem;
+  width: 96px;
+  transform: translateY(-50%) rotate(4deg);
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .note-row-stamp {
+    position: static;
+    order: -10000; /* ahead of the date, which is order-first */
+    width: 96px;
+    margin-bottom: 0.75rem;
+    transform: rotate(-4deg);
+  }
+}
+
+.note-row-stamp-inner {
+  filter: drop-shadow(0 4px 6px rgba(76, 76, 76, 0.16));
+}
+
+@media (hover: hover) and (min-width: 640px) {
+  .note-row-stamp {
+    top: 0;
+    left: 0;
+    right: auto;
+    z-index: 10;
+    width: 112px;
+    transform: none;
+    will-change: transform;
+  }
+
+  /* Leaving: a quick, small fade rather than the stamp-down in reverse */
+  .note-row-stamp-inner {
+    opacity: 0;
+    transform: rotate(-5deg) scale(0.96);
+    transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  }
+
+  .note-row[data-active="true"] .note-row-stamp-inner,
+  .note-row:focus-visible .note-row-stamp-inner {
+    opacity: 1;
+    transform: rotate(-5deg) scale(1);
+    animation: note-stamp-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@keyframes note-stamp-down {
+  from {
+    opacity: 0;
+    transform: rotate(-14deg) scale(1.3);
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* Note page header stamp: stuck on at a tilt, and straightens when hovered */
+.note-post-stamp {
+  transform: rotate(4deg);
+  filter: drop-shadow(0 6px 10px rgba(76, 76, 76, 0.16));
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.note-post-stamp:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,

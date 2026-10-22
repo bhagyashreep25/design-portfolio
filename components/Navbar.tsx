@@ -31,8 +31,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Section links stay active on their sub-pages too (e.g. /notes/<slug>)
+  const isCurrent = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+
   const linkClass = (href?: string) => {
-    const isActive = href && pathname === href;
+    const isActive = href && isCurrent(href);
     return `squiggle squiggle-hover font-serif text-base transition-colors duration-200 ${
       isActive
         ? "text-[#8c63d1] font-semibold"
@@ -41,7 +45,7 @@ export default function Navbar() {
   };
 
   const mobileLinkClass = (href?: string) => {
-    const isActive = href && pathname === href;
+    const isActive = href && isCurrent(href);
     return `font-serif text-2xl transition-colors duration-200 ${
       isActive
         ? "text-[#8c63d1] font-semibold"
@@ -83,6 +87,11 @@ export default function Navbar() {
           <li>
             <Link href="/play" className={linkClass("/play")} aria-current={pathname === "/play" ? "page" : undefined}>
               Play
+            </Link>
+          </li>
+          <li>
+            <Link href="/notes" className={linkClass("/notes")} aria-current={isCurrent("/notes") ? "page" : undefined}>
+              Notes
             </Link>
           </li>
           <li>
@@ -157,6 +166,15 @@ export default function Navbar() {
                 onClick={() => setMenuOpen(false)}
               >
                 Play
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/notes"
+                className={mobileLinkClass("/notes")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Notes
               </Link>
             </li>
             <li>
