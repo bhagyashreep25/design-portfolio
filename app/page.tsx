@@ -14,9 +14,10 @@ const DRAW_PORTRAIT = true;
 // beside it; clipping to that keeps the image on screen at tablet widths.
 const BREAKOUT = "calc(-1 * min(85px, (100vw - 100%) / 2 - 8px))";
 
-// Hero text waits for the portrait: 750ms after the original, or starts partway
-// through the drawn version (it runs ~3.3s) so the page never feels stuck.
-const HERO_TEXT_DELAY = DRAW_PORTRAIT ? 1500 : 750;
+// Hero text waits for the portrait: 750ms after the original, or starts early
+// in the drawn version (it runs ~3.3s) so the words are readable while the
+// portrait is still drawing.
+const HERO_TEXT_DELAY = DRAW_PORTRAIT ? 600 : 750;
 
 type WorkItem = {
   slug: string;
@@ -133,7 +134,7 @@ export default function Home() {
                   animation="fade-in"
                   duration={500}
                   delay={250}
-                  easing="ease-out"
+                 
                 >
                   <div className="w-[18rem] h-[18rem] sm:w-[19.8rem] sm:h-[19.8rem] relative">
                     <Image
@@ -158,7 +159,7 @@ export default function Home() {
                     slideDistance={300}
                     duration={500}
                     delay={500}
-                    easing="ease-out"
+                   
                     className="absolute bottom-0 left-0 w-full"
                   >
                     <div className="relative w-full" style={{ paddingBottom: "118.2%" }}>
@@ -181,10 +182,10 @@ export default function Home() {
         <AnimateIn
           trigger="load"
           animation="fade-slide-up"
-          slideDistance={300}
+          slideDistance={20}
           duration={500}
           delay={HERO_TEXT_DELAY}
-          easing="ease-out"
+         
           className="max-w-[940px]"
         >
           <p className="font-serif text-[28px] text-[#6b6b6b] mb-4">
@@ -196,10 +197,10 @@ export default function Home() {
         <AnimateIn
           trigger="load"
           animation="fade-slide-up"
-          slideDistance={300}
+          slideDistance={20}
           duration={500}
-          delay={HERO_TEXT_DELAY + 250}
-          easing="ease-out"
+          delay={HERO_TEXT_DELAY + 80}
+         
           className="max-w-[940px]"
         >
           <h1
@@ -219,10 +220,10 @@ export default function Home() {
         <AnimateIn
           trigger="load"
           animation="fade-slide-up"
-          slideDistance={300}
+          slideDistance={20}
           duration={500}
-          delay={HERO_TEXT_DELAY + 500}
-          easing="ease-out"
+          delay={HERO_TEXT_DELAY + 160}
+         
           className="max-w-[940px]"
         >
           <p className="font-serif text-[24px] text-[#8f8f8f] leading-relaxed tracking-normal max-w-2xl">
@@ -230,11 +231,30 @@ export default function Home() {
             Lollypop Design Studio.
             <br />
             On the side, I build{" "}
+            {/* Grey at rest like the text around it, set apart by its weight and a
+                pen arrow; on hover it turns purple, the squiggle draws in under the
+                words and the arrow nudges up and out */}
             <Link
               href="/ai-labs"
-              className="whitespace-nowrap text-[#6b6b6b] underline underline-offset-4 decoration-[#c4c4c4] hover:decoration-[#6b6b6b] transition-colors"
+              className="group whitespace-nowrap font-medium text-[#6b6b6b] transition-colors duration-200 hover:text-[#8c63d1] focus-visible:text-[#8c63d1]"
             >
-              personal tools
+              <span className="squiggle squiggle-hover">personal tools</span>
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+                className="ml-1 mr-1 inline-block align-baseline transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5"
+              >
+                <path
+                  d="M2.5 11.5C5.3 8.6 8.2 5.8 11.2 2.8M5.6 2.6C7.6 2.7 9.5 2.6 11.4 2.5C11.4 4.5 11.5 6.4 11.6 8.4"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>{" "}
             to help me navigate my life.
           </p>
@@ -253,7 +273,7 @@ export default function Home() {
           animation="fade-slide-up"
           slideDistance={40}
           duration={500}
-          easing="ease-out"
+         
           threshold={0.1}
           className="relative text-center mb-32"
         >
@@ -261,7 +281,7 @@ export default function Home() {
             id="work-heading"
             className="font-serif text-[40px] font-medium text-[#6b6b6b]"
           >
-            <span className="squiggle squiggle-reveal">My Latest Work</span>
+            My Latest Work
           </h2>
         </AnimateIn>
 
@@ -283,7 +303,7 @@ export default function Home() {
                 animation="fade-slide-up"
                 slideDistance={40}
                 duration={500}
-                easing="ease-out"
+               
                 threshold={0.1}
               >
               {card(
@@ -393,7 +413,7 @@ export default function Home() {
                       It breaks out by up to 85px, but never further than the page margin
                       beside the card (less 8px), so it doesn't run off narrower screens. */}
                   <div
-                    className={`absolute transition-[transform,filter] duration-500 ease-out group-hover:-translate-y-2 group-hover:drop-shadow-[0_16px_20px_rgba(76,76,76,0.12)] ${isEven ? "group-hover:rotate-1" : "group-hover:-rotate-1"} ${item.imageWidth ? "" : "md:w-[55%] lg:w-[63%]"}`}
+                    className={`absolute transition-transform duration-200 ease-out group-hover:duration-300 group-hover:ease-playful group-hover:-translate-y-2 ${isEven ? "group-hover:rotate-1" : "group-hover:-rotate-1"} ${item.imageWidth ? "" : "md:w-[55%] lg:w-[63%]"}`}
                     style={{
                       top: -75,
                       right: isEven ? BREAKOUT : undefined,
@@ -401,6 +421,18 @@ export default function Home() {
                       ...(item.imageWidth ? { width: item.imageWidth } : {}),
                     }}
                   >
+                    {/* Shadow: a drop-shadowed copy under the mockup that only fades in,
+                        so the browser never re-filters the image while it moves */}
+                    <Image
+                      src={item.image}
+                      alt=""
+                      aria-hidden="true"
+                      width={1200}
+                      height={730}
+                      sizes="(min-width: 1072px) 640px, (min-width: 768px) 60vw, 100vw"
+                      quality={90}
+                      className="absolute inset-0 w-full h-auto opacity-0 drop-shadow-[0_16px_20px_rgba(76,76,76,0.12)] transition-opacity duration-200 ease-out group-hover:opacity-100 group-hover:duration-300"
+                    />
                     <Image
                       src={item.image}
                       alt={`${item.title} project mockup`}
@@ -408,7 +440,7 @@ export default function Home() {
                       height={730}
                       sizes="(min-width: 1072px) 640px, (min-width: 768px) 60vw, 100vw"
                       quality={90}
-                      className="w-full h-auto"
+                      className="relative w-full h-auto"
                     />
                   </div>
                 </div>

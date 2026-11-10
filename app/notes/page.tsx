@@ -18,12 +18,12 @@ export default function NotesPage() {
     <div className="max-w-5xl mx-auto px-6 py-20">
       <DottedBackground />
       <header className="mb-16">
-        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
           <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-[#4c4c4c] mb-5">
             Notes
           </h1>
         </AnimateIn>
-        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
           <p className="text-lg text-[#8f8f8f] leading-relaxed">
             Thoughts on design, craft, and everything in between.
           </p>
@@ -37,7 +37,8 @@ export default function NotesPage() {
           <ul role="list" className="border-t border-[#e5e5e5]">
             {notes.map(({ meta }, i) => (
               <li key={meta.slug} className="border-b border-[#e5e5e5]">
-                <AnimateIn delay={i * 80} slideDistance={20}>
+                {/* Stagger only the first rows; further down, each row enters as it scrolls in */}
+                <AnimateIn delay={Math.min(i, 4) * 60} slideDistance={20}>
                   <NoteRow
                     href={`/notes/${meta.slug}`}
                     stamp={<NoteStamp art={meta.stamp} id={meta.slug} number={getNoteNumber(meta.slug)} />}

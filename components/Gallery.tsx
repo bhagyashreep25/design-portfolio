@@ -17,6 +17,8 @@ export interface Piece {
 }
 
 const OPEN_MS = 450;
+// Closing is quicker: you chose to open it, but you want it gone when you close it
+const CLOSE_MS = 300;
 const EASE = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 
 interface Lightbox {
@@ -94,7 +96,7 @@ export default function Gallery({ columns }: { columns: Piece[][] }) {
   // Unmount once the close has shrunk back into the tile
   useEffect(() => {
     if (box?.phase !== "closing") return;
-    const timer = setTimeout(() => setBox(null), OPEN_MS);
+    const timer = setTimeout(() => setBox(null), CLOSE_MS);
     return () => clearTimeout(timer);
   }, [box?.phase]);
 
@@ -136,7 +138,8 @@ export default function Gallery({ columns }: { columns: Piece[][] }) {
                 animation="fade-slide-up"
                 slideDistance={24}
                 duration={600}
-                delay={i * 120 + colIdx * 60}
+                // Capped, so pieces lower in a column don't wait after they're on screen
+                delay={Math.min(i * 120 + colIdx * 60, 240)}
                 threshold={0.1}
               >
                 <button
@@ -182,7 +185,7 @@ export default function Gallery({ columns }: { columns: Piece[][] }) {
             className="absolute inset-0 bg-[#1f1a26]/90 backdrop-blur-sm"
             style={{
               opacity: atTile ? 0 : 1,
-              transition: `opacity ${OPEN_MS}ms ease-out`,
+              transition: `opacity ${box.phase === "closing" ? CLOSE_MS : OPEN_MS}ms ease-out`,
             }}
           />
 
@@ -197,7 +200,10 @@ export default function Gallery({ columns }: { columns: Piece[][] }) {
               transform: atTile
                 ? `translate(${box.from.left - target.left}px, ${box.from.top - target.top}px) scale(${box.from.width / target.width}, ${box.from.height / target.height})`
                 : "none",
-              transition: box.phase === "from" ? "none" : `transform ${OPEN_MS}ms ${EASE}`,
+              transition:
+                box.phase === "from"
+                  ? "none"
+                  : `transform ${box.phase === "closing" ? CLOSE_MS : OPEN_MS}ms ${EASE}`,
             }}
           >
             {box.piece.video ? (
@@ -239,7 +245,7 @@ export default function Gallery({ columns }: { columns: Piece[][] }) {
             type="button"
             onClick={close}
             aria-label="Close"
-            className="fixed right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="fixed right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-[background-color,transform] duration-150 ease-out hover:bg-white/20 active:scale-[0.97]"
             style={{
               opacity: box.phase === "open" ? 1 : 0,
               transition: "opacity 200ms ease-out",

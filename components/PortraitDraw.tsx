@@ -22,20 +22,11 @@ const circlePath = (r: number) =>
   `M${CX} ${CY - r}A${r} ${r} 0 1 0 ${CX} ${CY + r}A${r} ${r} 0 1 0 ${CX} ${CY - r}`;
 const circleLen = (r: number) => Math.ceil(2 * Math.PI * r);
 
-// Hover extras (.pd-hover in globals.css): a blush on each cheekbone and two
-// sparkles off the top of the head
+// Hover blush (.pd-hover in globals.css), one on each cheekbone
 const BLUSH_CHEEKS = [
   [592, 532],
   [810, 532],
 ];
-const SPARKLES = [
-  { x: 975, y: 95, r: 34 },
-  { x: 1040, y: 175, r: 18 },
-];
-const sparklePath = (r: number) => {
-  const k = 0.12 * r;
-  return `M0 ${-r}C${k} ${-k} ${k} ${-k} ${r} 0C${k} ${k} ${k} ${k} 0 ${r}C${-k} ${k} ${-k} ${k} ${-r} 0C${-k} ${-k} ${-k} ${-k} 0 ${-r}Z`;
-};
 
 // Hover smile: the lips are cut out of each layer and split down the middle,
 // and each half tips its corner up around a pivot just under the lips
@@ -189,21 +180,11 @@ export default function PortraitDraw() {
           <LayerImage name="fill" />
         </g>
 
-        {/* Hover blush: a very light blurred wash on the cheekbones with two faint
-            hatch strokes on each, under the ink */}
-        <g className="pd-blush">
-          <g filter="url(#pd-blush-blur)" fill="#9776CF" opacity="0.22">
-            {BLUSH_CHEEKS.map(([x, y]) => (
-              <ellipse key={x} cx={x} cy={y} rx="50" ry="26" />
-            ))}
-          </g>
-          <g stroke="#9776CF" strokeOpacity="0.4" strokeWidth="3" strokeLinecap="round">
-            {BLUSH_CHEEKS.flatMap(([x, y]) =>
-              [0, 1].map((i) => (
-                <path key={`${x}-${i}`} d={`M${x - 12 + i * 13} ${y + 9}L${x - 4 + i * 13} ${y - 9}`} />
-              ))
-            )}
-          </g>
+        {/* Hover blush: a very light blurred wash on the cheekbones, under the ink */}
+        <g className="pd-blush" filter="url(#pd-blush-blur)" fill="#956FD6" fillOpacity="0.22">
+          {BLUSH_CHEEKS.map(([x, y]) => (
+            <ellipse key={x} cx={x} cy={y} rx="50" ry="26" />
+          ))}
         </g>
 
         <g mask="url(#pd-crop)">
@@ -222,17 +203,6 @@ export default function PortraitDraw() {
             </g>
           ))}
         </g>
-
-        {SPARKLES.map((sp, i) => (
-          <g key={sp.x} transform={`translate(${sp.x} ${sp.y})`}>
-            <path
-              className="pd-sparkle"
-              style={{ transitionDelay: `${i * 0.1}s` }}
-              d={sparklePath(sp.r)}
-              fill="#A582DF"
-            />
-          </g>
-        ))}
       </svg>
     </>
   );

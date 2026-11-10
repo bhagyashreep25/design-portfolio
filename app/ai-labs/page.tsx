@@ -133,13 +133,13 @@ export default function AILabs() {
 
       {/* Hero */}
       <header className="max-w-5xl mx-auto px-6 pt-20 pb-10">
-        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
           <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-[#4c4c4c] mb-5">
             If it doesn&rsquo;t exist, vibe-code it
           </h1>
         </AnimateIn>
 
-        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+        <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
           <p className="text-lg text-[#8f8f8f] leading-relaxed">
             AI-powered tools I&rsquo;ve built from scratch to fit the way I
             actually work — because the right tool is the one that works how I

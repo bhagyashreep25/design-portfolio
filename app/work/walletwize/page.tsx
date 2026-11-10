@@ -42,17 +42,17 @@ const summaryItems = [
 const goals = [
   {
     image: "/images/walletwize/goal-1.png",
-    alt: "Illustration of a flag on a mountain representing financial goals",
+    alt: "",
     text: "Help young adults manage finances & achieve financial goals",
   },
   {
     image: "/images/walletwize/goal-2.png",
-    alt: "Illustration of a browser window representing intuitive UX",
+    alt: "",
     text: "Design an effective, intuitive, and simple UX",
   },
   {
     image: "/images/walletwize/goal-3.png",
-    alt: "Illustration of a shopping bag representing brand identity",
+    alt: "",
     text: "Create a cohesive brand, product & visual identity",
   },
 ];
@@ -103,7 +103,7 @@ export default function WalletWizePage() {
   return (
     <article style={{ "--cs-accent": "#C9259A" } as React.CSSProperties}>
       {/* Header */}
-      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
         <header className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
           <h1 className="font-serif text-4xl sm:text-5xl font-medium tracking-tight text-[#4c4c4c] mb-5">
             Simplifying personal finances for young adults
@@ -368,7 +368,7 @@ export default function WalletWizePage() {
               href="https://www.figma.com/proto/ecx3OZf0K9uC3UBUb9fHLc/WalletWize?page-id=0%3A1&type=design&node-id=1-836&viewport=1498%2C4702%2C0.22&t=z5c3G5RvypJub24p-1&scaling=scale-down&mode=design"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#D2B9FA] text-[#4c4c4c] font-normal text-[18px] p-[13px] hover:bg-[#c4a6f5] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#D2B9FA] text-[#4c4c4c] font-normal text-[18px] p-[13px] hover:bg-[#c4a6f5] transition-[color,background-color,transform] duration-150 ease-out active:scale-[0.97]"
             >
               View Prototype
             </a>

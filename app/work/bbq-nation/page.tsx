@@ -154,7 +154,7 @@ export default async function BbqNationPage() {
   return (
     <article style={{ "--cs-accent": "#EA5B1E" } as React.CSSProperties}>
       {/* Header */}
-      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
         <header className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
           <h1 className="font-serif text-4xl sm:text-5xl font-medium tracking-tight text-[#4c4c4c] mb-5">
             I redesigned table booking for India&rsquo;s favourite barbecue chain
@@ -231,7 +231,7 @@ export default async function BbqNationPage() {
             <div className="mt-8 flex justify-center">
               <a
                 href="#designs"
-                className="inline-flex items-center gap-2 bg-[#D2B9FA] text-[#4c4c4c] font-normal text-[18px] p-[13px] hover:bg-[#c4a6f5] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#D2B9FA] text-[#4c4c4c] font-normal text-[18px] p-[13px] hover:bg-[#c4a6f5] transition-[color,background-color,transform] duration-150 ease-out active:scale-[0.97]"
               >
                 Jump to the Designs
               </a>

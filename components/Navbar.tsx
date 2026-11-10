@@ -4,12 +4,23 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// The nav slides away while you scroll down so the content has the page.
+// true = it slides back as soon as you scroll up; false = only once you're
+// back near the top.
+const REVEAL_ON_SCROLL_UP = true;
+// Always shown until the page has scrolled past the bar itself
+const HIDE_AFTER = 100;
+// Scroll moves smaller than this are ignored, so trackpad jitter and iOS
+// bounce don't make the nav flicker
+const SCROLL_TOLERANCE = 8;
+
 export default function Navbar() {
   const pathname = usePathname();
   const workHref = pathname === "/" ? "#projects" : "/#projects";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -25,11 +36,44 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    onScroll();
+    let lastY = Math.max(0, window.scrollY);
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const y = Math.max(0, window.scrollY);
+      setScrolled(y > 10);
+
+      if (y < HIDE_AFTER) {
+        setHidden(false);
+        lastY = y;
+        return;
+      }
+      // Only count a direction once it has moved past the tolerance; small
+      // moves accumulate against the last position we acted on
+      const delta = y - lastY;
+      if (Math.abs(delta) < SCROLL_TOLERANCE) return;
+      if (delta > 0) setHidden(true);
+      else if (REVEAL_ON_SCROLL_UP) setHidden(false);
+      lastY = y;
+    };
+
+    // One update per frame, however many scroll events fire
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, []);
+
+  // Never hide an open menu, and bring the nav back when a keyboard user
+  // tabs into it
+  const isHidden = hidden && !menuOpen;
 
   // Section links stay active on their sub-pages too (e.g. /notes/<slug>)
   const isCurrent = (href: string) =>
@@ -53,12 +97,39 @@ export default function Navbar() {
     }`;
   };
 
+  // Résumé is an action (opens a PDF), so it gets an outlined pill
+  const resumeClass =
+    "group inline-flex items-center gap-1.5 font-serif font-medium text-[#8c63d1] border-[1.5px] border-[#cdb7f0] rounded-full transition-[color,background-color,border-color,transform] duration-150 ease-out hover:bg-[#f4ebff] hover:border-[#a582df] active:scale-[0.97]";
+
+  // Same pen arrow as the "personal tools" link on the home page: grey at
+  // rest, purple and nudged up and out on hover
+  const resumeArrow = (
+    <svg
+      viewBox="0 0 14 14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-[13px] h-[13px] text-[#8f8f8f] transition-[transform,color] duration-200 group-hover:text-[#8c63d1] group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-focus-visible:text-[#8c63d1]"
+      aria-hidden="true"
+    >
+      <path d="M2.5 11.5C5.3 8.6 8.2 5.8 11.2 2.8M5.6 2.6C7.6 2.7 9.5 2.6 11.4 2.5C11.4 4.5 11.5 6.4 11.6 8.4" />
+    </svg>
+  );
+
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ease-out ${
+      className={`sticky top-0 z-50 transition-[transform,opacity,background-color] ease-out will-change-transform ${
         scrolled ? "bg-white/70 backdrop-blur-sm" : "bg-transparent"
       }`}
-      style={{ opacity: navVisible ? 1 : 0 }}
+      style={{
+        opacity: navVisible && !isHidden ? 1 : 0,
+        transform: isHidden ? "translateY(-100%)" : "translateY(0)",
+        // Getting out of the way is quick; coming back is a touch gentler
+        transitionDuration: isHidden ? "240ms" : "300ms",
+      }}
+      onFocus={() => setHidden(false)}
     >
       <nav
         className="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between"
@@ -72,45 +143,53 @@ export default function Navbar() {
           B.
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-10" role="list">
-          <li>
-            <Link href={workHref} className={linkClass()}>
-              Work
-            </Link>
-          </li>
-          <li>
-            <Link href="/ai-labs" className={linkClass("/ai-labs")} aria-current={pathname === "/ai-labs" ? "page" : undefined}>
-              AI Labs
-            </Link>
-          </li>
-          <li>
-            <Link href="/play" className={linkClass("/play")} aria-current={pathname === "/play" ? "page" : undefined}>
-              Play
-            </Link>
-          </li>
-          <li>
-            <Link href="/notes" className={linkClass("/notes")} aria-current={isCurrent("/notes") ? "page" : undefined}>
-              Notes
-            </Link>
-          </li>
-          <li>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClass()}
-              aria-label="Download résumé (opens in new tab)"
-            >
-              Resume
-            </a>
-          </li>
-          <li>
-            <Link href="/about" className={linkClass("/about")} aria-current={pathname === "/about" ? "page" : undefined}>
-              About
-            </Link>
-          </li>
-        </ul>
+        {/* Desktop links: the work, a divider, then about me */}
+        <div className="hidden md:flex items-center gap-7">
+          <ul className="flex items-center gap-10" role="list">
+            <li>
+              <Link href={workHref} className={linkClass()}>
+                Work
+              </Link>
+            </li>
+            <li>
+              <Link href="/ai-labs" className={linkClass("/ai-labs")} aria-current={pathname === "/ai-labs" ? "page" : undefined}>
+                AI Labs
+              </Link>
+            </li>
+            <li>
+              <Link href="/play" className={linkClass("/play")} aria-current={pathname === "/play" ? "page" : undefined}>
+                Play
+              </Link>
+            </li>
+            <li>
+              <Link href="/notes" className={linkClass("/notes")} aria-current={isCurrent("/notes") ? "page" : undefined}>
+                Notes
+              </Link>
+            </li>
+          </ul>
+
+          <span className="block w-px h-[18px] bg-[#dcd6e4]" aria-hidden="true" />
+
+          <ul className="flex items-center gap-7" role="list">
+            <li>
+              <Link href="/about" className={linkClass("/about")} aria-current={pathname === "/about" ? "page" : undefined}>
+                About
+              </Link>
+            </li>
+            <li>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${resumeClass} text-[15px] pl-4 pr-[15px] py-1.5`}
+                aria-label="Download résumé (opens in new tab)"
+              >
+                Resume
+                {resumeArrow}
+              </a>
+            </li>
+          </ul>
+        </div>
 
         {/* Hamburger button */}
         <button
@@ -178,18 +257,6 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={mobileLinkClass()}
-                aria-label="Download résumé (opens in new tab)"
-                onClick={() => setMenuOpen(false)}
-              >
-                Resume
-              </a>
-            </li>
-            <li>
               <Link
                 href="/about"
                 className={mobileLinkClass("/about")}
@@ -197,6 +264,19 @@ export default function Navbar() {
               >
                 About
               </Link>
+            </li>
+            <li>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${resumeClass} text-xl px-6 py-2`}
+                aria-label="Download résumé (opens in new tab)"
+                onClick={() => setMenuOpen(false)}
+              >
+                Resume
+                {resumeArrow}
+              </a>
             </li>
           </ul>
         </div>

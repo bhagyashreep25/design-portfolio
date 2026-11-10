@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import AnimateIn from "@/components/AnimateIn";
 import DottedBackground from "@/components/DottedBackground";
+import PlayOnHover from "@/components/PlayOnHover";
 
 const polaroids = [
   { src: "/images/about/1.JPG", alt: "Smiling on a waterfront stone promenade, wearing a beanie and a black-and-white plaid cardigan", rotate: -3 },
@@ -29,14 +30,14 @@ export default function AboutPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 sm:py-20">
       <DottedBackground />
-      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0} easing="ease-out">
+      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={0}>
         <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-[#4c4c4c] mb-10">
           A glimpse into my world
         </h1>
       </AnimateIn>
 
       {/* Polaroid Marquee */}
-      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={200} easing="ease-out">
+      <AnimateIn trigger="load" animation="fade-in" duration={500} delay={200}>
         <div className="overflow-hidden -mx-6 mb-14 sm:mb-20">
           <div className="marquee-track gap-8 py-6">
             {[...polaroids, ...polaroids].map((photo, i) => (
@@ -162,7 +163,8 @@ export default function AboutPage() {
 
       {/* Sticky note — What am I doing these days? */}
       <AnimateIn trigger="scroll" animation="fade-in" duration={500} threshold={0.1}>
-        <div
+        <PlayOnHover
+          animation="note-swing"
           className="pinned-note relative bg-[#f9f5ff] rounded-lg shadow-md p-8 sm:p-10"
         >
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -176,13 +178,13 @@ export default function AboutPage() {
             What am I doing these days?
           </h3>
           <ul className="text-[15px] text-[#6b6b6b] leading-[1.8] space-y-2">
-            <li className="flex items-start gap-2"><span className="emoji emoji-stir shrink-0 mt-0.5">&#9749;</span> Brewing my own cup of coffee with a trusty old aeropress</li>
-            <li className="flex items-start gap-2"><span className="emoji emoji-flicker shrink-0 mt-0.5">&#9889;</span> Desperately waiting for the new Harry Potter show (while complaining about how the Marauders show should&rsquo;ve been greenlit)</li>
-            <li className="flex items-start gap-2"><span className="emoji emoji-bounce shrink-0 mt-0.5">&#127911;</span> Obsessing over the musical genius that is Tame Impala</li>
-            <li className="flex items-start gap-2"><span className="emoji emoji-fly shrink-0 mt-0.5">&#9992;&#65039;</span> Planning my next getaway</li>
-            <li className="flex items-start gap-2"><span className="emoji emoji-lift shrink-0 mt-0.5">&#127947;&#65039;</span> Trying to maintain a consistent workout routine</li>
+            <PlayOnHover as="li" animation="emoji-stir" className="flex items-start gap-2"><span className="emoji emoji-stir shrink-0 mt-0.5">&#9749;</span> Brewing my own cup of coffee with a trusty old aeropress</PlayOnHover>
+            <PlayOnHover as="li" animation="emoji-flicker" className="flex items-start gap-2"><span className="emoji emoji-flicker shrink-0 mt-0.5">&#9889;</span> Desperately waiting for the new Harry Potter show (while complaining about how the Marauders show should&rsquo;ve been greenlit)</PlayOnHover>
+            <PlayOnHover as="li" animation="emoji-bounce" className="flex items-start gap-2"><span className="emoji emoji-bounce shrink-0 mt-0.5">&#127911;</span> Obsessing over the musical genius that is Tame Impala</PlayOnHover>
+            <PlayOnHover as="li" animation="emoji-fly" className="flex items-start gap-2"><span className="emoji emoji-fly shrink-0 mt-0.5">&#9992;&#65039;</span> Planning my next getaway</PlayOnHover>
+            <PlayOnHover as="li" animation="emoji-lift" className="flex items-start gap-2"><span className="emoji emoji-lift shrink-0 mt-0.5">&#127947;&#65039;</span> Trying to maintain a consistent workout routine</PlayOnHover>
           </ul>
-        </div>
+        </PlayOnHover>
       </AnimateIn>
     </div>
   );

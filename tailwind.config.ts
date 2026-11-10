@@ -7,8 +7,23 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./content/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // hover: variants only apply on devices that can really hover, so a tap on
+  // a phone doesn't leave a card stuck in its hover state
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
+      // The site's three curves (also CSS variables in globals.css):
+      // out = entrances and UI, draw = pen strokes drawing themselves,
+      // playful = hover lifts that overshoot a little.
+      // "out" replaces Tailwind's built-in ease-out, so every ease-out class
+      // on the site gets the stronger curve.
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.23, 1, 0.32, 1)",
+        draw: "cubic-bezier(0.45, 0, 0.35, 1)",
+        playful: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      },
       fontFamily: {
         sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
         serif: ["var(--font-recoleta)", "Georgia", "serif"],

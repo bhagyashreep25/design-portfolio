@@ -6,6 +6,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* The site's three curves (mirrored in tailwind.config.ts) */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-draw: cubic-bezier(0.45, 0, 0.35, 1);
+  --ease-playful: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 @layer base {
   body {
     @apply bg-white text-[#4c4c4c] antialiased;
@@ -25,9 +32,11 @@ body.dotted-grid {
   background-size: 24px 24px;
 }
 
-/* Custom sparkle-pointer cursor */
+/* Sparkle cursor. While reading it's just the lilac arrow; over anything
+   clickable the sparkle's rays burst around it, and pressing draws them in
+   tight. The rays are the "you can click this" signal. */
 body.sparkle-cursor {
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='38' viewBox='0 0 116 109' fill='none'><path d='M53.9178 38.898C58.1006 38.6263 62.4526 39.7097 66.4987 40.6153C72.5486 41.9692 90.5868 47.7463 93.8055 52.9295C94.4367 53.946 94.5691 55.0708 94.2759 56.2237C92.881 61.7078 83.0465 63.4471 78.2854 64.4271C76.7019 64.753 74.4167 65.0098 73.0453 65.8713C72.1797 66.4151 71.7295 69.7089 71.4932 70.8008C70.4778 74.81 69.5078 81.7052 66.8624 84.8327C66.0234 85.8246 64.811 86.6426 63.4873 86.7408C62.383 86.8227 61.4648 86.3163 60.6532 85.6163C54.5968 80.3928 47.223 56.6984 46.6519 48.5617C46.48 46.1123 46.4282 42.9118 48.1757 40.9502C49.6879 39.2526 51.7971 39.0264 53.9178 38.898Z' fill='%23a582df'/><path d='M51.7189 19.4886C52.7737 19.4278 54.878 20.2192 54.9928 21.3561C55.216 23.5671 55.4072 26.6181 54.8419 28.7555C54.6561 29.4585 53.2123 30.1652 52.5375 30.3434C49.0459 30.4987 48.9308 27.7051 49.0315 25.0452C49.1367 22.269 48.438 20.4549 51.7189 19.4886Z' fill='%23a582df'/><path d='M30.2667 41.342C31.6184 41.2838 36.0047 41.0819 36.9958 41.9016C38.9567 43.5235 38.2672 47.0156 35.3474 47.3631C34.2592 47.5217 32.8164 47.4845 31.7023 47.5037C29.7571 47.5375 28.9786 47.2316 27.6356 45.8963C26.9942 43.5434 27.5744 41.5974 30.2667 41.342Z' fill='%23a582df'/><path d='M66.8873 25.7729C67.5911 25.7251 68.3781 25.7494 68.971 26.1364C73.1608 28.8718 68.1843 32.502 65.9923 34.4585C65.7181 34.7032 65.2057 34.8383 64.8948 34.9182C64.1734 34.9521 63.5689 34.8992 62.9001 34.5733C58.3779 32.3692 64.3042 26.6763 66.8873 25.7729Z' fill='%23a582df'/><path d='M38.9677 53.5588C42.4285 53.2336 44.065 56.64 41.5401 59.064C40.2237 60.3278 39.0071 62.0959 37.1925 62.6831C34.6784 62.862 32.7641 61.0311 33.6744 58.6492C34.253 57.1353 37.5179 54.1504 38.9677 53.5588Z' fill='%23a582df'/><path d='M35.7962 25.7805C37.0464 25.6828 37.7112 25.8167 38.7552 26.6429C41.2024 28.5795 45.4433 32.7873 40.4122 34.8897C39.744 34.9655 39.1327 35.0046 38.5355 34.6684C37.0729 33.845 34.0782 31.0589 33.6037 29.5568C33.3684 28.8155 33.4351 28.0112 33.7896 27.3189C34.2175 26.5014 34.9472 26.0553 35.7962 25.7805Z' fill='%23a582df'/></svg>") 18 14, auto;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='38' viewBox='0 0 116 109' fill='none'><path d='M53.9178 38.898C58.1006 38.6263 62.4526 39.7097 66.4987 40.6153C72.5486 41.9692 90.5868 47.7463 93.8055 52.9295C94.4367 53.946 94.5691 55.0708 94.2759 56.2237C92.881 61.7078 83.0465 63.4471 78.2854 64.4271C76.7019 64.753 74.4167 65.0098 73.0453 65.8713C72.1797 66.4151 71.7295 69.7089 71.4932 70.8008C70.4778 74.81 69.5078 81.7052 66.8624 84.8327C66.0234 85.8246 64.811 86.6426 63.4873 86.7408C62.383 86.8227 61.4648 86.3163 60.6532 85.6163C54.5968 80.3928 47.223 56.6984 46.6519 48.5617C46.48 46.1123 46.4282 42.9118 48.1757 40.9502C49.6879 39.2526 51.7971 39.0264 53.9178 38.898Z' fill='%23a582df'/></svg>") 18 14, auto;
 }
 
 body.sparkle-cursor a,
@@ -35,7 +44,20 @@ body.sparkle-cursor button,
 body.sparkle-cursor [role="button"],
 body.sparkle-cursor input[type="submit"],
 body.sparkle-cursor .cursor-pointer {
-  cursor: inherit !important;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='38' viewBox='0 0 116 109' fill='none'><path d='M53.9178 38.898C58.1006 38.6263 62.4526 39.7097 66.4987 40.6153C72.5486 41.9692 90.5868 47.7463 93.8055 52.9295C94.4367 53.946 94.5691 55.0708 94.2759 56.2237C92.881 61.7078 83.0465 63.4471 78.2854 64.4271C76.7019 64.753 74.4167 65.0098 73.0453 65.8713C72.1797 66.4151 71.7295 69.7089 71.4932 70.8008C70.4778 74.81 69.5078 81.7052 66.8624 84.8327C66.0234 85.8246 64.811 86.6426 63.4873 86.7408C62.383 86.8227 61.4648 86.3163 60.6532 85.6163C54.5968 80.3928 47.223 56.6984 46.6519 48.5617C46.48 46.1123 46.4282 42.9118 48.1757 40.9502C49.6879 39.2526 51.7971 39.0264 53.9178 38.898Z' fill='%23a582df'/><path d='M51.7189 19.4886C52.7737 19.4278 54.878 20.2192 54.9928 21.3561C55.216 23.5671 55.4072 26.6181 54.8419 28.7555C54.6561 29.4585 53.2123 30.1652 52.5375 30.3434C49.0459 30.4987 48.9308 27.7051 49.0315 25.0452C49.1367 22.269 48.438 20.4549 51.7189 19.4886Z' fill='%23a582df'/><path d='M30.2667 41.342C31.6184 41.2838 36.0047 41.0819 36.9958 41.9016C38.9567 43.5235 38.2672 47.0156 35.3474 47.3631C34.2592 47.5217 32.8164 47.4845 31.7023 47.5037C29.7571 47.5375 28.9786 47.2316 27.6356 45.8963C26.9942 43.5434 27.5744 41.5974 30.2667 41.342Z' fill='%23a582df'/><path d='M66.8873 25.7729C67.5911 25.7251 68.3781 25.7494 68.971 26.1364C73.1608 28.8718 68.1843 32.502 65.9923 34.4585C65.7181 34.7032 65.2057 34.8383 64.8948 34.9182C64.1734 34.9521 63.5689 34.8992 62.9001 34.5733C58.3779 32.3692 64.3042 26.6763 66.8873 25.7729Z' fill='%23a582df'/><path d='M38.9677 53.5588C42.4285 53.2336 44.065 56.64 41.5401 59.064C40.2237 60.3278 39.0071 62.0959 37.1925 62.6831C34.6784 62.862 32.7641 61.0311 33.6744 58.6492C34.253 57.1353 37.5179 54.1504 38.9677 53.5588Z' fill='%23a582df'/><path d='M35.7962 25.7805C37.0464 25.6828 37.7112 25.8167 38.7552 26.6429C41.2024 28.5795 45.4433 32.7873 40.4122 34.8897C39.744 34.9655 39.1327 35.0046 38.5355 34.6684C37.0729 33.845 34.0782 31.0589 33.6037 29.5568C33.3684 28.8155 33.4351 28.0112 33.7896 27.3189C34.2175 26.5014 34.9472 26.0553 35.7962 25.7805Z' fill='%23a582df'/></svg>") 18 14, pointer !important;
+}
+
+body.sparkle-cursor a:active,
+body.sparkle-cursor button:active,
+body.sparkle-cursor [role="button"]:active,
+body.sparkle-cursor input[type="submit"]:active,
+body.sparkle-cursor .cursor-pointer:active {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='38' viewBox='0 0 116 109' fill='none'><path d='M53.9178 38.898C58.1006 38.6263 62.4526 39.7097 66.4987 40.6153C72.5486 41.9692 90.5868 47.7463 93.8055 52.9295C94.4367 53.946 94.5691 55.0708 94.2759 56.2237C92.881 61.7078 83.0465 63.4471 78.2854 64.4271C76.7019 64.753 74.4167 65.0098 73.0453 65.8713C72.1797 66.4151 71.7295 69.7089 71.4932 70.8008C70.4778 74.81 69.5078 81.7052 66.8624 84.8327C66.0234 85.8246 64.811 86.6426 63.4873 86.7408C62.383 86.8227 61.4648 86.3163 60.6532 85.6163C54.5968 80.3928 47.223 56.6984 46.6519 48.5617C46.48 46.1123 46.4282 42.9118 48.1757 40.9502C49.6879 39.2526 51.7971 39.0264 53.9178 38.898Z' fill='%23a582df'/><g transform='translate(47 40) scale(0.8) translate(-47 -40)'><path d='M51.7189 19.4886C52.7737 19.4278 54.878 20.2192 54.9928 21.3561C55.216 23.5671 55.4072 26.6181 54.8419 28.7555C54.6561 29.4585 53.2123 30.1652 52.5375 30.3434C49.0459 30.4987 48.9308 27.7051 49.0315 25.0452C49.1367 22.269 48.438 20.4549 51.7189 19.4886Z' fill='%23a582df'/><path d='M30.2667 41.342C31.6184 41.2838 36.0047 41.0819 36.9958 41.9016C38.9567 43.5235 38.2672 47.0156 35.3474 47.3631C34.2592 47.5217 32.8164 47.4845 31.7023 47.5037C29.7571 47.5375 28.9786 47.2316 27.6356 45.8963C26.9942 43.5434 27.5744 41.5974 30.2667 41.342Z' fill='%23a582df'/><path d='M66.8873 25.7729C67.5911 25.7251 68.3781 25.7494 68.971 26.1364C73.1608 28.8718 68.1843 32.502 65.9923 34.4585C65.7181 34.7032 65.2057 34.8383 64.8948 34.9182C64.1734 34.9521 63.5689 34.8992 62.9001 34.5733C58.3779 32.3692 64.3042 26.6763 66.8873 25.7729Z' fill='%23a582df'/><path d='M38.9677 53.5588C42.4285 53.2336 44.065 56.64 41.5401 59.064C40.2237 60.3278 39.0071 62.0959 37.1925 62.6831C34.6784 62.862 32.7641 61.0311 33.6744 58.6492C34.253 57.1353 37.5179 54.1504 38.9677 53.5588Z' fill='%23a582df'/><path d='M35.7962 25.7805C37.0464 25.6828 37.7112 25.8167 38.7552 26.6429C41.2024 28.5795 45.4433 32.7873 40.4122 34.8897C39.744 34.9655 39.1327 35.0046 38.5355 34.6684C37.0729 33.845 34.0782 31.0589 33.6037 29.5568C33.3684 28.8155 33.4351 28.0112 33.7896 27.3189C34.2175 26.5014 34.9472 26.0553 35.7962 25.7805Z' fill='%23a582df'/></g></svg>") 18 14, pointer !important;
+}
+
+body.sparkle-cursor button:disabled,
+body.sparkle-cursor input[type="submit"]:disabled {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='38' viewBox='0 0 116 109' fill='none'><path d='M53.9178 38.898C58.1006 38.6263 62.4526 39.7097 66.4987 40.6153C72.5486 41.9692 90.5868 47.7463 93.8055 52.9295C94.4367 53.946 94.5691 55.0708 94.2759 56.2237C92.881 61.7078 83.0465 63.4471 78.2854 64.4271C76.7019 64.753 74.4167 65.0098 73.0453 65.8713C72.1797 66.4151 71.7295 69.7089 71.4932 70.8008C70.4778 74.81 69.5078 81.7052 66.8624 84.8327C66.0234 85.8246 64.811 86.6426 63.4873 86.7408C62.383 86.8227 61.4648 86.3163 60.6532 85.6163C54.5968 80.3928 47.223 56.6984 46.6519 48.5617C46.48 46.1123 46.4282 42.9118 48.1757 40.9502C49.6879 39.2526 51.7971 39.0264 53.9178 38.898Z' fill='%23a582df'/></svg>") 18 14, not-allowed !important;
 }
 
 /* Hand-drawn underline. It draws itself in once its AnimateIn is in view: a
@@ -49,7 +71,7 @@ body.sparkle-cursor .cursor-pointer {
   padding-bottom: 4px;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  transition: background-size 0.9s cubic-bezier(0.45, 0, 0.35, 1) 0.4s;
+  transition: background-size 0.9s var(--ease-draw) 0.4s;
 }
 
 [data-visible="false"] .hand-underline {
@@ -74,24 +96,34 @@ body.sparkle-cursor .cursor-pointer {
   animation-play-state: paused;
 }
 
+/* Hover lifts across the site share one rhythm: a quick settle back (200ms)
+   and a slightly longer, overshooting lift on the way up (280ms, set on the
+   :hover rule). Lifts only run on devices that can really hover, so a tap on
+   a phone doesn't leave a piece stuck lifted. */
 .polaroid {
   transform: rotate(var(--r, 0deg));
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease-out;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
-.polaroid:hover {
-  transform: translateY(-10px) scale(1.04);
-  box-shadow: 0 18px 30px -12px rgba(76, 76, 76, 0.35);
+@media (hover: hover) and (pointer: fine) {
+  .polaroid:hover {
+    transform: translateY(-10px) scale(1.04);
+    box-shadow: 0 18px 30px -12px rgba(76, 76, 76, 0.35);
+    transition-duration: 0.28s;
+    transition-timing-function: var(--ease-playful), var(--ease-out);
+  }
 }
 
 /* "What am I doing these days?" note: swings on its pin when hovered, and
-   each line's emoji does its own little thing */
+   each line's emoji does its own little thing. PlayOnHover sets
+   [data-playing] and clears it when the animation ends, so a swing always
+   finishes instead of snapping back when the pointer leaves mid-way. */
 .pinned-note {
   transform: rotate(-1.5deg);
   transform-origin: 50% 0;
 }
 
-.pinned-note:hover {
+.pinned-note[data-playing] {
   animation: note-swing 1.4s ease-out;
 }
 
@@ -107,11 +139,11 @@ body.sparkle-cursor .cursor-pointer {
   display: inline-block;
 }
 
-li:hover > .emoji-stir { animation: emoji-stir 0.7s ease-in-out; }
-li:hover > .emoji-flicker { animation: emoji-flicker 0.6s steps(1, end); }
-li:hover > .emoji-bounce { animation: emoji-bounce 0.8s ease-in-out; }
-li:hover > .emoji-fly { animation: emoji-fly 0.8s ease-in-out; }
-li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
+li[data-playing] > .emoji-stir { animation: emoji-stir 0.7s ease-in-out; }
+li[data-playing] > .emoji-flicker { animation: emoji-flicker 0.6s steps(1, end); }
+li[data-playing] > .emoji-bounce { animation: emoji-bounce 0.8s ease-in-out; }
+li[data-playing] > .emoji-fly { animation: emoji-fly 0.8s ease-in-out; }
+li[data-playing] > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 
 @keyframes emoji-stir {
   0%, 100% { transform: rotate(0); }
@@ -154,7 +186,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 .pd-draw {
   stroke-dasharray: var(--len);
   animation-name: pd-draw;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1);
+  animation-timing-function: var(--ease-draw);
 }
 
 @keyframes pd-draw {
@@ -168,7 +200,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   stroke-dasharray: var(--len) var(--len);
   stroke-dashoffset: calc(var(--len) * -1);
   animation-name: pd-crop-sweep;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1);
+  animation-timing-function: var(--ease-draw);
 }
 
 @keyframes pd-crop-sweep {
@@ -185,15 +217,17 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   from { opacity: 0; }
 }
 
-/* Portrait hover (.pd-hover wraps the portrait on the home page): blush and
-   sparkles */
+/* Portrait hover (.pd-hover wraps the portrait on the home page): she smiles
+   first, then the blush rises once the smile has mostly landed. Leaving, the
+   blush fades straight away while the smile relaxes. */
 .pd-blush {
   opacity: 0;
-  transition: opacity 0.5s ease-out;
+  transition: opacity 0.3s ease-out;
 }
 
 .pd-hover:hover .pd-blush {
   opacity: 1;
+  transition: opacity 0.5s ease-out 0.25s;
 }
 
 /* Hover smile: each half of the lips widens and tips its corner up, pivoting
@@ -201,7 +235,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 .pd-smile {
   transform-box: view-box;
   transform-origin: 684px 666px;
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.5s var(--ease-playful);
 }
 
 .pd-hover:hover .pd-smile-left {
@@ -212,26 +246,15 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   transform: rotate(-8deg) scaleX(1.08);
 }
 
-.pd-sparkle {
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(0) rotate(-45deg);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
-}
-
-.pd-hover:hover .pd-sparkle {
-  transform: scale(1) rotate(0deg);
-  opacity: 1;
-}
-
-/* Loopy wave underline that draws in from the left. Each tile's path runs
-   half a loop past both edges so neighbouring tiles join without a seam, and
-   tiles keep their exact width (no "round" scaling) so they land on whole
-   pixels. A white stroke under the wave hides the dotted grid wherever the
+/* Loopy wave underline that draws in from the left. Each tile runs from the
+   top of one loop to the top of the next, with its path running a loop past
+   both edges so neighbouring tiles join without a seam. "round" fits a whole
+   number of tiles across the word (stretching each a hair), so the wave
+   covers the full word and starts and ends on the top of a loop on both
+   sides. A white stroke under the wave hides the dotted grid wherever the
    two cross.
-   .squiggle-hover: nav links, on hover/focus (and stays on for the current page).
-   .squiggle-reveal: section heading, once, when its AnimateIn scrolls into view. */
+   The squiggle only ever marks something clickable.
+   .squiggle-hover: on hover/focus (and stays on for the current page). */
 .squiggle {
   position: relative;
 }
@@ -241,7 +264,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   position: absolute;
   left: 0;
   right: 0;
-  background-repeat: repeat-x;
+  background-repeat: round no-repeat;
   clip-path: inset(0 100% 0 0);
   pointer-events: none;
 }
@@ -249,7 +272,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 .squiggle-hover::after {
   bottom: -9px;
   height: 8px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M-6 4C-6 7 0 7 0 4C0 1 6 1 6 4C6 7 12 7 12 4C12 1 18 1 18 4' stroke='white' stroke-width='5' fill='none'/><path d='M-6 4C-6 7 0 7 0 4C0 1 6 1 6 4C6 7 12 7 12 4C12 1 18 1 18 4' stroke='%23a582df' stroke-width='2' fill='none'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M-9 4C-9 7 -3 7 -3 4C-3 1 3 1 3 4C3 7 9 7 9 4C9 1 15 1 15 4C15 7 21 7 21 4' stroke='white' stroke-width='5' fill='none'/><path d='M-9 4C-9 7 -3 7 -3 4C-3 1 3 1 3 4C3 7 9 7 9 4C9 1 15 1 15 4C15 7 21 7 21 4' stroke='%23a582df' stroke-width='2' fill='none'/></svg>");
   background-size: 12px 8px;
   transition: clip-path 0.35s ease-out;
 }
@@ -260,30 +283,31 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   clip-path: inset(0 0 0 0);
 }
 
-.squiggle-reveal::after {
-  bottom: -16px;
-  height: 12px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'><path d='M-10 6C-10 10.5 0 10.5 0 6C0 1.5 10 1.5 10 6C10 10.5 20 10.5 20 6C20 1.5 30 1.5 30 6' stroke='white' stroke-width='5.5' fill='none'/><path d='M-10 6C-10 10.5 0 10.5 0 6C0 1.5 10 1.5 10 6C10 10.5 20 10.5 20 6C20 1.5 30 1.5 30 6' stroke='%23a582df' stroke-width='2.5' fill='none'/></svg>");
-  background-size: 20px 12px;
-  transition: clip-path 0.8s cubic-bezier(0.45, 0, 0.35, 1) 0.35s;
-}
-
-[data-visible="true"] .squiggle-reveal::after {
+/* A link that wraps its squiggle text (with an icon beside it) draws the
+   squiggle when any part of the link is hovered or focused */
+a:hover > .squiggle-hover::after,
+a:focus-visible > .squiggle-hover::after {
   clip-path: inset(0 0 0 0);
 }
 
 /* AI Labs phone mockups: tilt toward the text on hover while a glare sweeps
    across the screen */
 .phone-tilt {
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s var(--ease-out);
 }
 
-.phone-tilt-left:hover {
-  transform: translateY(-6px) rotate(2deg);
-}
+@media (hover: hover) and (pointer: fine) {
+  .phone-tilt:hover {
+    transition: transform 0.28s var(--ease-playful);
+  }
 
-.phone-tilt-right:hover {
-  transform: translateY(-6px) rotate(-2deg);
+  .phone-tilt-left:hover {
+    transform: translateY(-6px) rotate(2deg);
+  }
+
+  .phone-tilt-right:hover {
+    transform: translateY(-6px) rotate(-2deg);
+  }
 }
 
 .phone-glare::after {
@@ -301,15 +325,25 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 }
 
 /* Illustrations grid (components/Gallery.tsx): a piece lifts and tilts like
-   a print picked up off a desk. --tilt alternates so neighbours lean apart. */
+   a print picked up off a desk. --tilt alternates so neighbours lean apart.
+   The pieces are rectangles, so a box-shadow does what drop-shadow did
+   without re-filtering the whole image every frame. */
 .gallery-piece {
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s ease-out;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
-.gallery-piece:hover,
 .gallery-piece:focus-visible {
   transform: translateY(-6px) rotate(var(--tilt, 1.5deg));
-  filter: drop-shadow(0 16px 20px rgba(76, 76, 76, 0.14));
+  box-shadow: 0 16px 24px -10px rgba(76, 76, 76, 0.22);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery-piece:hover {
+    transform: translateY(-6px) rotate(var(--tilt, 1.5deg));
+    box-shadow: 0 16px 24px -10px rgba(76, 76, 76, 0.22);
+    transition-duration: 0.28s;
+    transition-timing-function: var(--ease-playful), var(--ease-out);
+  }
 }
 
 /* ---- Case study micro-interactions ----
@@ -351,7 +385,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.9s cubic-bezier(0.45, 0, 0.35, 1) 0.4s;
+  transition: stroke-dashoffset 0.9s var(--ease-draw) 0.4s;
 }
 
 [data-visible="false"] .hand-mark path {
@@ -386,7 +420,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.9s cubic-bezier(0.45, 0, 0.35, 1) calc(var(--d, 0s) + 0.3s);
+  transition: stroke-dashoffset 0.9s var(--ease-draw) calc(var(--d, 0s) + 0.3s);
 }
 
 .hand-note .hand-note-head {
@@ -586,7 +620,7 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
   .note-row:focus-visible .note-row-stamp-inner {
     opacity: 1;
     transform: rotate(-5deg) scale(1);
-    animation: note-stamp-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: note-stamp-down 0.4s var(--ease-playful);
   }
 }
 
@@ -604,11 +638,14 @@ li:hover > .emoji-lift { animation: emoji-lift 0.8s ease-in-out; }
 .note-post-stamp {
   transform: rotate(4deg);
   filter: drop-shadow(0 6px 10px rgba(76, 76, 76, 0.16));
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s var(--ease-out);
 }
 
-.note-post-stamp:hover {
-  transform: rotate(0deg) scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .note-post-stamp:hover {
+    transform: rotate(0deg) scale(1.05);
+    transition: transform 0.28s var(--ease-playful);
+  }
 }
 
 /* Respect reduced motion preference */

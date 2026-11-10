@@ -104,7 +104,7 @@ export default function PasswordGate() {
         <button
           type="submit"
           disabled={pending}
-          className="w-full bg-[#D2B9FA] text-[#4c4c4c] font-normal text-[18px] py-3 hover:bg-[#c4a6f5] transition-colors disabled:opacity-60"
+          className="w-full bg-[#D2B9FA] text-[#4c4c4c] font-normal text-[18px] py-3 hover:bg-[#c4a6f5] transition-[color,background-color,transform] duration-150 ease-out active:scale-[0.97] disabled:opacity-60 disabled:active:scale-100"
         >
           {pending ? "Checking…" : "Submit"}
         </button>

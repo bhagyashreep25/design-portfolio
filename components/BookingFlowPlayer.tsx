@@ -500,7 +500,7 @@ export default function BookingFlowPlayer() {
             type="button"
             onClick={toggle}
             aria-label={playing ? "Pause the walkthrough" : "Play the walkthrough"}
-            className="inline-flex items-center gap-2 bg-[#FFD1B8] px-4 py-2 text-[16px] text-[#4c4c4c] transition-colors hover:bg-[#FFBE9B]"
+            className="inline-flex items-center gap-2 bg-[#FFD1B8] px-4 py-2 text-[16px] text-[#4c4c4c] hover:bg-[#FFBE9B] transition-[color,background-color,transform] duration-150 ease-out active:scale-[0.97]"
           >
             {playing ? <Pause size={16} /> : <Play size={16} />}
             {playing ? "Pause" : "Play"}
@@ -509,7 +509,7 @@ export default function BookingFlowPlayer() {
             type="button"
             onClick={restart}
             aria-label="Restart the walkthrough"
-            className="inline-flex items-center gap-2 px-2 py-2 text-[16px] text-[#8f8f8f] transition-colors hover:text-[#4c4c4c]"
+            className="inline-flex items-center gap-2 px-2 py-2 text-[16px] text-[#8f8f8f] hover:text-[#4c4c4c] transition-[color,background-color,transform] duration-150 ease-out active:scale-[0.97]"
           >
             <RotateCcw size={16} />
             Restart
