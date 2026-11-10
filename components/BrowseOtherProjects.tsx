@@ -47,7 +47,6 @@ const LIVE_PROJECTS: LiveProject[] = [
     bgColor: "#f4ebff",
     image: "/images/school-counselling.webp",
     imageAlt: "School counselling project mockup",
-    passwordProtected: true,
   },
   {
     slug: "walletwize",

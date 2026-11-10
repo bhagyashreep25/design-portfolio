@@ -5,8 +5,6 @@ import BrowseOtherProjects from "@/components/BrowseOtherProjects";
 import HandMark from "@/components/HandMark";
 import HeroNotes, { type HeroNote } from "@/components/HeroNotes";
 import LoopingVideo from "@/components/LoopingVideo";
-import PasswordGate from "@/components/PasswordGate";
-import { isUnlocked } from "@/lib/gate";
 
 export const metadata: Metadata = {
   title: "CounselSync",
@@ -65,10 +63,7 @@ const HERO_NOTES: HeroNote[] = [
   },
 ];
 
-export default async function SchoolCounsellingPage() {
-  // Gate on the server: a locked visitor is never sent the case study at all.
-  if (!(await isUnlocked())) return <PasswordGate />;
-
+export default function SchoolCounsellingPage() {
   return (
     <article style={{ "--cs-accent": "#8C63D1" } as React.CSSProperties}>
       {/* Header */}

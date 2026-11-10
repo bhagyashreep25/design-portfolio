@@ -68,7 +68,6 @@ const workItems: WorkItem[] = [
     bgColor: "#f4ebff",
     accentColor: "#8C63D1",
     image: "/images/school-counselling.webp",
-    passwordProtected: true,
   },
   {
     slug: "walletwize",
