@@ -7,7 +7,7 @@ import LoopingVideo from "@/components/LoopingVideo";
 export const metadata: Metadata = {
   title: "AI Labs",
   description:
-    "AI-powered tools built from scratch by Bhagyashree Phadnis — karaoke tracks, coffee tracking, Figma plugins, and meal planning.",
+    "AI-powered tools built from scratch by Bhagyashree Phadnis — a cozy habits app, Figma plugins, karaoke tracks, coffee tracking, and meal planning.",
 };
 
 type LabMedia =
@@ -21,6 +21,43 @@ type LabMedia =
       height: number;
     };
 
+/** Where each project is on the road to being published. */
+type LabStatus = "building" | "under-review" | "beta-review" | "live";
+
+const STATUS: Record<LabStatus, { label: string; className: string }> = {
+  building: { label: "Building", className: "text-[#94590b] bg-[#fdf1dc]" },
+  "under-review": { label: "Under review", className: "text-[#2c64a3] bg-[#e6f0fb]" },
+  "beta-review": { label: "Beta review", className: "text-[#9a3f8f] bg-[#fbeaf8]" },
+  live: { label: "Live", className: "text-[#2a7140] bg-[#e4f4e8]" },
+};
+
+/** 14px line icon for a status; the live dot gets a soft pulse instead. */
+function StatusIcon({ status }: { status: LabStatus }) {
+  if (status === "live") {
+    return (
+      <span aria-hidden="true" className="relative flex h-2 w-2">
+        <span className="absolute inline-flex h-full w-full rounded-full bg-[#3fae5f] opacity-60 motion-safe:animate-ping" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-[#3fae5f]" />
+      </span>
+    );
+  }
+  const paths: Record<Exclude<LabStatus, "live">, string[]> = {
+    // hammer
+    building: ["M2.5 13.5l6-6", "M7 4l2.5-2.5 5 5L12 9z"],
+    // hourglass
+    "under-review": ["M4 1.75h8", "M4 14.25h8", "M5 1.75c0 3.5 6 3.5 6 6.25s-6 2.75-6 6.25", "M11 1.75c0 3.5-6 3.5-6 6.25s6 2.75 6 6.25"],
+    // flask (a beta build out for testing)
+    "beta-review": ["M6 1.75h4", "M7 1.75v4.5L3.2 12.6a1.1 1.1 0 0 0 .95 1.65h7.7a1.1 1.1 0 0 0 .95-1.65L9 6.25v-4.5", "M4.6 10.25h6.8"],
+  };
+  return (
+    <svg aria-hidden="true" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+      {paths[status].map((d) => (
+        <path key={d} d={d} />
+      ))}
+    </svg>
+  );
+}
+
 interface LabItem {
   name: string;
   subtitle: string;
@@ -28,13 +65,66 @@ interface LabItem {
   doodle: string[];
   oneLiner: string;
   description: string;
+  status: LabStatus;
   tags: string[];
   mediaType: "phone" | "image";
   media: LabMedia;
   tryItUrl: string | null;
+  /** link text; defaults to "Try it out" */
+  tryItLabel?: string;
 }
 
 const labItems: LabItem[] = [
+  {
+    name: "kani",
+    subtitle: "Habits & Focus",
+    doodle: [
+      "M6 31c0-13 8-23 19-23 6 0 10 5 10 11 0 7-6 12-15 12z",
+      "M26 23c-3 0-5-2-5-5s3-4 5-3 2 4 0 4",
+      "M10 31v-6",
+      "M15 31v-5",
+    ],
+    oneLiner: "Cozy habits with a hermit crab",
+    description:
+      "Kani is a hermit crab living on a hand-drawn beach. Each small daily ritual you keep (the kind things you do for yourself) brings in a trinket from the sea for its shell. Focus mode blocks the apps you choose through Screen Time while you work under moonlight, and you can leave notes in bottles. And no guilt: no streaks, no punishments, no red badges. Miss a day and Kani is just as happy to see you.",
+    status: "beta-review",
+    tags: ["iOS App"],
+    mediaType: "phone",
+    media: {
+      kind: "video",
+      src: "/images/ai-labs/kani.mp4",
+      poster: "/images/ai-labs/kani-poster.webp",
+      label: "kani habits and focus app demo",
+      width: 640,
+      height: 1392,
+    },
+    tryItUrl: "https://testflight.apple.com/join/XR22KxqZ",
+    tryItLabel: "Join the beta",
+  },
+  {
+    name: "link buddy",
+    subtitle: "Figma Prototype Link Grabber",
+    doodle: [
+      "M17 25l-4 4a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 0",
+      "M23 15l4-4a5 5 0 0 1 7 7l-6 6a5 5 0 0 1-7 0",
+      "M16 24l8-8",
+    ],
+    oneLiner: "Skip the click-hunt",
+    description:
+      "A Figma plugin that scans every section and prototype flow on a page and surfaces all shareable links in one place. No more selecting each frame, hitting share, copying, repeating. Just open, grab, go.",
+    status: "under-review",
+    tags: ["Plugin"],
+    mediaType: "image" as const,
+    media: {
+      kind: "video" as const,
+      src: "/images/ai-labs/linkd.mp4",
+      poster: "/images/ai-labs/linkd-poster.webp",
+      label: "Link Buddy Figma plugin demo",
+      width: 1000,
+      height: 1280,
+    },
+    tryItUrl: null,
+  },
   {
     name: "strippd",
     subtitle: "Karaoke Track Generator",
@@ -46,6 +136,7 @@ const labItems: LabItem[] = [
     oneLiner: "Sing it your way",
     description:
       "A web tool that generates karaoke tracks from any song. Free karaoke tracks online sound terrible — and bad backing tracks make even good singers sound off. So I built one that doesn't compromise the performance.",
+    status: "live",
     tags: ["Website"],
     mediaType: "image",
     media: {
@@ -67,7 +158,8 @@ const labItems: LabItem[] = [
     oneLiner: "Every blend, remembered",
     description:
       "A minimal coffee tracker for logging every blend I try across roasters all over the country. My notes app was chaos. This just feels right — cute, hands-free, and built for someone who treats coffee like a quiet obsession.",
-    tags: ["App"],
+    status: "building",
+    tags: ["iOS App"],
     mediaType: "phone" as const,
     media: {
       kind: "video" as const,
@@ -80,30 +172,7 @@ const labItems: LabItem[] = [
     tryItUrl: null,
   },
   {
-    name: "Link\u2019d",
-    subtitle: "Figma Prototype Link Grabber",
-    doodle: [
-      "M17 25l-4 4a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 0",
-      "M23 15l4-4a5 5 0 0 1 7 7l-6 6a5 5 0 0 1-7 0",
-      "M16 24l8-8",
-    ],
-    oneLiner: "Skip the click-hunt",
-    description:
-      "A Figma plugin that scans every section and prototype flow on a page and surfaces all shareable links in one place. No more selecting each frame, hitting share, copying, repeating. Just open, grab, go.",
-    tags: ["Plugin"],
-    mediaType: "image" as const,
-    media: {
-      kind: "video" as const,
-      src: "/images/ai-labs/linkd.mp4",
-      poster: "/images/ai-labs/linkd-poster.webp",
-      label: "Link'd Figma plugin demo",
-      width: 1000,
-      height: 1280,
-    },
-    tryItUrl: null,
-  },
-  {
-    name: "Sage",
+    name: "sage",
     subtitle: "Meal Planner",
     doodle: [
       "M7 34C7 18 17 8 34 6c0 17-9 28-27 28z",
@@ -112,7 +181,8 @@ const labItems: LabItem[] = [
     oneLiner: "My life, my kitchen, my rules",
     description:
       "A meal planner that thinks the way I do — start with the day, then layer in lunch and dinner around it. Keeps my go-to recipes in one spot, builds shopping lists without friction. Not another meal app that tries to plan my whole life — just one that fits mine.",
-    tags: ["App"],
+    status: "building",
+    tags: ["iOS App"],
     mediaType: "phone" as const,
     media: {
       kind: "video" as const,
@@ -240,12 +310,17 @@ export default function AILabs() {
                         <path key={d} pathLength={1} d={d} />
                       ))}
                     </svg>
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <h2 className="font-serif text-[28px] font-medium text-[#4c4c4c] leading-tight">
-                        <span className="font-light">{item.name}</span>{" "}
-                        &mdash; {item.subtitle}
-                      </h2>
-                      <div className="flex gap-2 shrink-0 pt-2">
+                    <h2 className="font-serif text-[28px] font-medium text-[#4c4c4c] leading-tight mb-4">
+                      <span className="font-light">{item.name}</span>{" "}
+                      &mdash; {item.subtitle}
+                    </h2>
+
+                    {/* Tagline with the type + stage pills on the same line; pills wrap below when it's tight */}
+                    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 mb-4">
+                      <p className="font-serif text-lg text-[#4c4c4c]">
+                        {item.oneLiner}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
                         {item.tags.map((tag) => (
                           <span
                             key={tag}
@@ -254,14 +329,17 @@ export default function AILabs() {
                             {tag}
                           </span>
                         ))}
+                        <span
+                          className={`inline-flex items-center gap-1.5 text-xs font-medium tracking-wide px-3 py-1 rounded-full ${STATUS[item.status].className}`}
+                        >
+                          <StatusIcon status={item.status} />
+                          <span className="sr-only">Status: </span>
+                          {STATUS[item.status].label}
+                        </span>
                       </div>
                     </div>
 
-                    <p className="font-serif text-lg text-[#4c4c4c] mb-3">
-                      {item.oneLiner}
-                    </p>
-
-                    <p className="text-[15px] text-[#8f8f8f] leading-relaxed">
+                    <p className="text-[15px] text-[#8f8f8f] leading-[1.7]">
                       {item.description}
                     </p>
 
@@ -272,7 +350,8 @@ export default function AILabs() {
                         rel="noopener noreferrer"
                         className="group inline-flex items-center gap-1.5 text-[#8C63D1] hover:text-[#6b45b0] transition-colors mt-5 text-[15px] font-medium"
                       >
-                        Try it out
+                        {item.tryItLabel ?? "Try it out"}
+                        <span className="sr-only"> (opens in a new tab)</span>
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5">
                           <path d="M3.5 1.75H12.25V10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           <path d="M12.25 1.75L1.75 12.25" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
